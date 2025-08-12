@@ -1,30 +1,38 @@
-// import logo from './logo.svg';
-// import { Routes, Route } from 'react-router-dom';
 import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import LandingPage from './components/LandingPage/LandingPage';
 
 function App() {
+
+
   return (
     <div className="App">
-      <header className="App-header">
+            <header>
+         <h1>Berry's</h1>
+{/* //       <input type="text" placeholder="Buscar música..." id="search"> */}
+         <nav>
+             <ul>
+                 <li><a href="/">Inicio</a></li>
+                 <li><a href="/explore">Explorar</a></li>
+                 <li><a href="/cart">Carrito (<span id="cart-count">0</span>)</a></li>
+                 <li><a href="/profile">Profile</a></li>
+             </ul>
+         </nav>
+     </header>
       <div>
-        {/* <Routes> */}
-          {/* <Route path="/" element={<LandingPage/>}/> */}
-        {/* </Routes> */}
+        <Routes>
+          <Route path="/" element={<LandingPage/>}/>
+          {/* <Route path="/home" element={<Cards games={games} onSearch={onSearch} genres={genres} getGenres={getGenres}/>}/> */}
+          {/* <Route path="/detail/:id" element={<Detail/>}/> */}
+          {/* <Route path="/form" element={<Form platforms={platforms} genres={genres}/>}/> */}
+        </Routes>
       </div>
-      </header>
+
+      <footer>
+        <p>&copy; 2025 Berry's - Todos los derechos reservados</p>
+      </footer>
     </div>
   );
 }
 
 export default App;
-
-{/* <div className="App">
-      <div>
-        <Routes>
-          <Route path="/" element={<LandingPage/>}/>
-          <Route path="/home" element={<Cards games={games} onSearch={onSearch} genres={genres} getGenres={getGenres}/>}/>
-          <Route path="/detail/:id" element={<Detail/>}/>
-          <Route path="/form" element={<Form platforms={platforms} genres={genres}/>}/>
-        </Routes>
-      </div>
-    </div> */}
