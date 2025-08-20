@@ -1,15 +1,17 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import LandingPage from './components/LandingPage/LandingPage';
+import NavBar from "./components/NavBar/NavBar";
 
 function App() {
 
 
   return (
     <div className="App">
-            <header>
-         <h1>Berry's</h1>
-{/* //       <input type="text" placeholder="Buscar música..." id="search"> */}
+      <NavBar />
+      <header>
+         {/* <h1>Berry's</h1>
+         <input type="text" placeholder="Buscar música..." id="search">
          <nav>
              <ul>
                  <li><a href="/">Inicio</a></li>
@@ -17,7 +19,8 @@ function App() {
                  <li><a href="/cart">Carrito (<span id="cart-count">0</span>)</a></li>
                  <li><a href="/profile">Profile</a></li>
              </ul>
-         </nav>
+         </nav> */}
+         
      </header>
       <div>
         <Routes>
