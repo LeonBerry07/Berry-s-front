@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import LandingPage from './components/LandingPage/LandingPage';
 import NavBar from "./components/NavBar/NavBar";
 import Home from "./components/Home/Home";
+import Login from "./components/Login/Login";
 
 function App() {
 
@@ -23,11 +24,10 @@ function App() {
          </nav> */}
          
      </header>
-     <Home/>
       <div>
         <Routes>
-          <Route path="/" element={<LandingPage/>}/>
-          {/* <Route path="/home" element={<Cards games={games} onSearch={onSearch} genres={genres} getGenres={getGenres}/>}/> */}
+          <Route path="/" element={<Home/>}/>
+          <Route path="/login" element={<Login/>}/>
           {/* <Route path="/detail/:id" element={<Detail/>}/> */}
           {/* <Route path="/form" element={<Form platforms={platforms} genres={genres}/>}/> */}
         </Routes>
