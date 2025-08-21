@@ -2,6 +2,7 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import LandingPage from './components/LandingPage/LandingPage';
 import NavBar from "./components/NavBar/NavBar";
+import Home from "./components/Home/Home";
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
          </nav> */}
          
      </header>
+     <Home/>
       <div>
         <Routes>
           <Route path="/" element={<LandingPage/>}/>

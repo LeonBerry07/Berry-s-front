@@ -1,0 +1,59 @@
+.home {
+  background: linear-gradient(to right, #ec4899, #8b5cf6, #3b82f6);
+  color: white;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.hero {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.btn-primary {
+  background: white;
+  color: #6b21a8;
+  padding: 12px 24px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.btn-primary:hover {
+  background: #f3f3f3;
+}
+
+.featured {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.featured h2 {
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+
+.beat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.cta {
+  background: #1f1d2b;
+  padding: 60px 20px;
+  text-align: center;
+}

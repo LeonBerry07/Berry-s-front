@@ -1,0 +1,58 @@
+.beat-card {
+  background: white;
+  color: #3b0764;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s;
+}
+
+.beat-card:hover {
+  transform: scale(1.05);
+}
+
+.beat-info h3 {
+  font-size: 1.2rem;
+  margin-bottom: 6px;
+}
+
+.beat-info p {
+  font-size: 0.9rem;
+  color: gray;
+}
+
+.beat-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.btn-preview {
+  background: #6d28d9;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-preview:hover {
+  background: #5b21b6;
+}
+
+.btn-secondary {
+  background: white;
+  color: #6b21a8;
+  padding: 12px 24px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.btn-secondary:hover {
+  background: #f3f3f3;
+}
