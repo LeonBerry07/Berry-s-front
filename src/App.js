@@ -13,17 +13,6 @@ function App() {
     <div className="App">
       <NavBar />
       <header>
-         {/* <h1>Berry's</h1>
-         <input type="text" placeholder="Buscar música..." id="search">
-         <nav>
-             <ul>
-                 <li><a href="/">Inicio</a></li>
-                 <li><a href="/explore">Explorar</a></li>
-                 <li><a href="/cart">Carrito (<span id="cart-count">0</span>)</a></li>
-                 <li><a href="/profile">Profile</a></li>
-             </ul>
-         </nav> */}
-         
      </header>
       <div>
         <Routes>
