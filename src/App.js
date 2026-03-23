@@ -4,6 +4,7 @@ import LandingPage from './components/LandingPage/LandingPage';
 import NavBar from "./components/NavBar/NavBar";
 import Home from "./components/Home/Home";
 import Login from "./components/Login/Login";
+import Catalogue from "./components/Catalogue/Catalogue";
 
 function App() {
 
@@ -28,13 +29,13 @@ function App() {
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/login" element={<Login/>}/>
-          {/* <Route path="/detail/:id" element={<Detail/>}/> */}
+          <Route path="/catalogue" element={<Catalogue/>}/>
           {/* <Route path="/form" element={<Form platforms={platforms} genres={genres}/>}/> */}
         </Routes>
       </div>
 
       <footer>
-        <p>&copy; 2025 Berry's - Todos los derechos reservados</p>
+        <p>&copy; 2026 Berry's - All rights reserved</p>
       </footer>
     </div>
   );

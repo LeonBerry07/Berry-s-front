@@ -1,8 +1,7 @@
-// src/pages/Home.jsx
 import BeatCard from "../BeatCard/BeatCard"
-import "./Home.css"
+import "./Catalogue.css"
 
-export default function Home() {
+export default function Catalogue() {
   const featuredBeats = [
     { id: 1, title: "Lo-Fi Dreams", producer: "BerryBeats", price: 25 },
     { id: 2, title: "Trap Energy", producer: "OM53", price: 40 },
@@ -11,21 +10,20 @@ export default function Home() {
 
   return (
     <div className="home">
-      {/* Hero */}
-      <section className="hero">
-        <h1>Bienvenido a Berry’s Music Store 🎧</h1>
-        <p>
-          Descubre, escucha y compra beats exclusivos de productores de todo el
-          mundo.
-        </p>
-        <a href="/catalogue" className="btn-primary">
-          Explorar Catálogo
-        </a>
+      <section className="featured">
+        <div class="catalog-nav">
+        <button class="filter-btn" data-filter="new">New Beats</button>
+        <button class="filter-btn" data-filter="top">Top Beats</button>
+        <button class="filter-btn" data-filter="lofi">LoFi</button>
+        <button class="filter-btn" data-filter="ambient">Ambient</button>
+        <button class="filter-btn" data-filter="all">All</button>
+      </div>
+
+<div id="catalog" class="catalog"></div>
       </section>
 
       {/* Destacados */}
       <section className="featured">
-        <h2>Beats Destacados</h2>
         <div className="beat-grid">
           {featuredBeats.map((beat) => (
             <BeatCard key={beat.id} beat={beat} />
@@ -33,7 +31,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA final */}
+      <section className="featured">
+        <div className="beat-grid">
+          {featuredBeats.map((beat) => (
+            <BeatCard key={beat.id} beat={beat} />
+          ))}
+        </div>
+      </section>
+
       <section className="cta">
         <h2>¿Listo para crear tu próximo hit?</h2>
         <p>Regístrate y empieza a comprar o vender beats ahora mismo.</p>
