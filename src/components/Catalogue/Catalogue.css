@@ -41,22 +41,49 @@ gap:20px;
 padding:30px;
 }
 
-.catalog-nav button{
-width:150px;
-height:80px;
-background:#222;
-color:white;
+.category-btn{
+width:180px;
+height:120px;
 border:none;
-border-radius:8px;
-font-size:16px;
+border-radius:10px;
+color:white;
+font-size:18px;
 font-weight:bold;
 cursor:pointer;
+
+background-size:cover;
+background-position:center;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+text-shadow:0 0 8px black;
+}
+
+.category-btn:hover{
+transform:scale(1.05);
 transition:0.2s;
 }
 
-.catalog-nav button:hover{
-background:#444;
-transform:scale(1.05);
+.new{
+background-image:url(https://unreal-music.com/wp-content/uploads/2023/04/LoFi-1024x538.jpg);
+}
+
+.top{
+background-image:url("https://unreal-music.com/wp-content/uploads/2023/04/LoFi-1024x538.jpg");
+}
+
+.lofi{
+background-image:url(https://unreal-music.com/wp-content/uploads/2023/04/LoFi-1024x538.jpg);
+}
+
+.ambient{
+background-image:url(https://unreal-music.com/wp-content/uploads/2023/04/LoFi-1024x538.jpg);
+}
+
+.all{
+background-image:url(https://unreal-music.com/wp-content/uploads/2023/04/LoFi-1024x538.jpg);
 }
 
 .featured {

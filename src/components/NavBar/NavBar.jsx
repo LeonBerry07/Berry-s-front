@@ -12,8 +12,8 @@ function NavBar() {
       <ul className="navbar-links">
         <li><Link to="/"><a href="#home">Inicio</a></Link></li>
         <li><Link to="/catalogue"><a href="#catalogue">Catalogue</a></Link></li>
-        <li><a href="#about">Acerca</a></li>
-        <li><a href="#contact">Contacto</a></li>
+        {/* <li><a href="#about">Acerca</a></li>
+        <li><a href="#contact">Contacto</a></li> */}
         <li><Link to="/login"><a href="#login" className="login-button">Login</a></Link></li>
       </ul>
     </nav>
