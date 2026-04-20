@@ -6,8 +6,7 @@ function NavBar() {
   return (
     <nav className="navbar">
       <div className="navbar-logo">
-        {/* <Link to="/">Berry's Music</Link> */}
-        Berry's Music
+        <Link to="/">Berry's Music</Link>
       </div>
       <ul className="navbar-links">
         <li><Link to="/"><a href="#home">Inicio</a></Link></li>
