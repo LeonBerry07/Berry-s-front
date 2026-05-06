@@ -13,7 +13,7 @@ export default function Home() {
     <div className="home">
       {/* Hero */}
       <section className="hero">
-        <h1>Bienvenido a Berry’s Music Store 🎧</h1>
+        <h1>Berry’s Music Store 🎧</h1>
         <p>
           Descubre, escucha y compra beats exclusivos de productores de todo el
           mundo.

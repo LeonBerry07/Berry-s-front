@@ -4,13 +4,17 @@
   align-items: center;
   padding: 1rem 2rem;
   background-color: #1f1f1f;
-  /* color: rgb(224, 71, 176); */
-  color: #ff4c98;
 }
 
 .navbar-logo {
   font-size: 1.5rem;
   font-weight: bold;
+  color:#ffffff;
+}
+
+.navbar a:hover {
+  /* color: #ff6b81; */
+  color: #b1b1b1;
 }
 
 .navbar-links {
@@ -27,5 +31,5 @@
 
 .navbar-links li a:hover {
   /* color: #ff6b81; */
-  color: #ff4c98;
+  color: #b1b1b1;
 }
