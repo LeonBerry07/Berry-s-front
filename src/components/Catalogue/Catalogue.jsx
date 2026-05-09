@@ -1,55 +1,77 @@
-import BeatCard from "../BeatCard/BeatCard"
-import "./Catalogue.css"
+import { useEffect, useState } from "react";
+import BeatCard from "../BeatCard/BeatCard";
+import "./Catalogue.css";
 
 export default function Catalogue() {
-  const featuredBeats = [
-    { 
-      id: 1, 
-      title: "Lo-Fi Dreams", 
-      producer: "BerryBeats", 
-      price: 25,
-      category: "lofi"
-    },
-    { 
-      id: 2, 
-      title: "Trap Energy", 
-      producer: "OM53", 
-      price: 40,
-      category: "top"
-    },
-    { id: 3, title: "Jazz Chill", producer: "Bruno M", price: 30, category: "ambient" },
-  ]
+  const [beats, setBeats] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [loading, setLoading] = useState(true);
+
+  // Cargar beats desde el backend
+  useEffect(() => {
+    async function fetchBeats() {
+      try {
+        let url = "http://localhost:3001/api/beats";
+
+        if (selectedCategory !== "all") {
+          url += `?category=${selectedCategory}`;
+        }
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        setBeats(data);
+      } catch (error) {
+        console.error("Error loading beats:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchBeats();
+  }, [selectedCategory]);
 
   return (
     <div className="home">
+      {/* Navegación de categorías */}
       <section className="featured">
-        <div class="catalog-nav">
-        <button class="category-btn new" data-category="new">New Beats</button>
-        <button class="category-btn top" data-category="top">Top Beats</button>
-
-        <button class="category-btn lofi">
-          LoFi
+        <div className="catalog-nav">
+          <button className="category-btn new" onClick={() => setSelectedCategory("new")}>
+            New Beats
           </button>
 
-        <button class="category-btn ambient">
-          Ambient
+          <button className="category-btn top" onClick={() => setSelectedCategory("top")}>
+            Top Beats
           </button>
 
-        <button class="category-btn all" data-category="all">All</button>
-      </div>
+          <button className="category-btn lofi" onClick={() => setSelectedCategory("lofi")}>
+            LoFi
+          </button>
 
-<div id="catalog" class="catalog"></div>
-      </section>
+          <button className="category-btn ambient" onClick={() => setSelectedCategory("ambient")}>
+            Ambient
+          </button>
 
-      {/* Destacados */}
-      <section className="featured">
-        <div className="beat-grid">
-          {featuredBeats.map((beat) => (
-            <BeatCard key={beat.id} beat={beat} />
-          ))}
+          <button className="category-btn all" onClick={() => setSelectedCategory("all")}>
+            All
+          </button>
         </div>
       </section>
 
+      {/* Catálogo */}
+      <section className="featured">
+        {loading ? (
+          <p>Cargando beats...</p>
+        ) : (
+          <div className="beat-grid">
+            {beats.map((beat) => (
+              <BeatCard key={beat.id} beat={beat} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* CTA */}
       <section className="cta">
         <h2>¿Listo para crear tu próximo hit?</h2>
         <p>Regístrate y empieza a comprar o vender beats ahora mismo.</p>
@@ -58,5 +80,5 @@ export default function Catalogue() {
         </a>
       </section>
     </div>
-  )
+  );
 }
