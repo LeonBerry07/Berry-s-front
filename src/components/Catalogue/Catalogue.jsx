@@ -2,32 +2,21 @@ import { useEffect, useState } from "react";
 import BeatCard from "../BeatCard/BeatCard";
 import "./Catalogue.css";
 
-export default function Catalogue() {
+export default function Catalogue({ cart, setCart }) {
   const [beats, setBeats] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [loading, setLoading] = useState(true);
 
-  // Estado del carrito
-  const [cart, setCart] = useState([]);
-
-  // Función para agregar beats al carrito (SIN DUPLICADOS)
+  // Agregar al carrito (sin duplicados)
   function addToCart(beat) {
-    console.log("Added to cart:", beat.title);
-
     setCart((prevCart) => {
-      const alreadyInCart = prevCart.some(
-        (item) => item.id === beat.id
-      );
-
-      if (alreadyInCart) {
-        return prevCart; // no lo agrega otra vez
-      }
-
+      const exists = prevCart.some(item => item.id === beat.id);
+      if (exists) return prevCart;
       return [...prevCart, beat];
     });
   }
 
-  // Cargar beats desde el backend
+  // Cargar beats
   useEffect(() => {
     async function fetchBeats() {
       try {
@@ -55,9 +44,11 @@ export default function Catalogue() {
 
   return (
     <div className="home">
-      {/* Navegación de categorías */}
+
+      {/* Categorías */}
       <section className="featured">
         <div className="catalog-nav">
+
           <button onClick={() => setSelectedCategory("new")} className="category-btn new">
             New Beats
           </button>
@@ -77,15 +68,17 @@ export default function Catalogue() {
           <button onClick={() => setSelectedCategory("all")} className="category-btn all">
             All
           </button>
+
         </div>
 
-        {/* Contador del carrito */}
+        {/* contador */}
         <p style={{ marginTop: "20px", fontWeight: "bold" }}>
           Cart ({cart.length})
         </p>
+
       </section>
 
-      {/* Catálogo */}
+      {/* catálogo */}
       <section className="featured">
         {loading ? (
           <p>Cargando beats...</p>
@@ -102,14 +95,6 @@ export default function Catalogue() {
         )}
       </section>
 
-      {/* CTA */}
-      <section className="cta">
-        <h2>¿Listo para crear tu próximo hit?</h2>
-        <p>Regístrate y empieza a comprar o vender beats ahora mismo.</p>
-        <a href="/login" className="btn-secondary">
-          Crear Cuenta
-        </a>
-      </section>
     </div>
   );
 }

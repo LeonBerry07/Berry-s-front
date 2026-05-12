@@ -1,18 +1,39 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./NavBar.css"; // CSS específico para la Navbar
+import "./NavBar.css";
 
 function NavBar() {
   return (
     <nav className="navbar">
+
       <div>
-        <Link to="/"><a className="navbar-logo">Berry's Music</a></Link>
+        <Link to="/" className="navbar-logo">
+          Berry's Music
+        </Link>
       </div>
+
       <ul className="navbar-links">
-        <li><Link to="/"><a href="#home">Inicio</a></Link></li>
-        <li><Link to="/catalogue"><a href="#catalogue">Catalogue</a></Link></li>
-        <li><Link to="/login"><a href="#login" className="login-button">Login</a></Link></li>
+
+        <li>
+          <Link to="/">Inicio</Link>
+        </li>
+
+        <li>
+          <Link to="/catalogue">Catalogue</Link>
+        </li>
+
+        <li>
+          <Link to="/cart">Cart 🛒</Link>
+        </li>
+
+        <li>
+          <Link to="/login" className="login-button">
+            Login
+          </Link>
+        </li>
+
       </ul>
+
     </nav>
   );
 }
