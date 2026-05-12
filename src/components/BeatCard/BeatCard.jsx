@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import "./BeatCard.css";
 
-export default function BeatCard({ beat }) {
+export default function BeatCard({ beat, addToCart }) {
   const audioRef = useRef(null);
 
   function handlePreview() {
@@ -32,6 +32,13 @@ export default function BeatCard({ beat }) {
           onClick={handlePreview}
         >
           Preview ▶
+        </button>
+
+        <button
+          className="btn-cart"
+          onClick={() => addToCart(beat)}
+        >
+          Add to Cart 🛒
         </button>
       </div>
 

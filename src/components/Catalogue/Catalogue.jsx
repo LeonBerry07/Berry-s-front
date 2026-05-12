@@ -7,10 +7,32 @@ export default function Catalogue() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [loading, setLoading] = useState(true);
 
+  // Estado del carrito
+  const [cart, setCart] = useState([]);
+
+  // Función para agregar beats al carrito (SIN DUPLICADOS)
+  function addToCart(beat) {
+    console.log("Added to cart:", beat.title);
+
+    setCart((prevCart) => {
+      const alreadyInCart = prevCart.some(
+        (item) => item.id === beat.id
+      );
+
+      if (alreadyInCart) {
+        return prevCart; // no lo agrega otra vez
+      }
+
+      return [...prevCart, beat];
+    });
+  }
+
   // Cargar beats desde el backend
   useEffect(() => {
     async function fetchBeats() {
       try {
+        setLoading(true);
+
         let url = "http://localhost:3001/api/beats";
 
         if (selectedCategory !== "all") {
@@ -36,26 +58,31 @@ export default function Catalogue() {
       {/* Navegación de categorías */}
       <section className="featured">
         <div className="catalog-nav">
-          <button className="category-btn new" onClick={() => setSelectedCategory("new")}>
+          <button onClick={() => setSelectedCategory("new")} className="category-btn new">
             New Beats
           </button>
 
-          <button className="category-btn top" onClick={() => setSelectedCategory("top")}>
+          <button onClick={() => setSelectedCategory("top")} className="category-btn top">
             Top Beats
           </button>
 
-          <button className="category-btn lofi" onClick={() => setSelectedCategory("lofi")}>
+          <button onClick={() => setSelectedCategory("lofi")} className="category-btn lofi">
             LoFi
           </button>
 
-          <button className="category-btn ambient" onClick={() => setSelectedCategory("ambient")}>
+          <button onClick={() => setSelectedCategory("ambient")} className="category-btn ambient">
             Ambient
           </button>
 
-          <button className="category-btn all" onClick={() => setSelectedCategory("all")}>
+          <button onClick={() => setSelectedCategory("all")} className="category-btn all">
             All
           </button>
         </div>
+
+        {/* Contador del carrito */}
+        <p style={{ marginTop: "20px", fontWeight: "bold" }}>
+          Cart ({cart.length})
+        </p>
       </section>
 
       {/* Catálogo */}
@@ -65,7 +92,11 @@ export default function Catalogue() {
         ) : (
           <div className="beat-grid">
             {beats.map((beat) => (
-              <BeatCard key={beat.id} beat={beat} />
+              <BeatCard
+                key={beat.id}
+                beat={beat}
+                addToCart={addToCart}
+              />
             ))}
           </div>
         )}
