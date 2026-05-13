@@ -1,7 +1,6 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
 import NavBar from "./components/NavBar/NavBar";
 import Home from "./components/Home/Home";
 import Login from "./components/Login/Login";
@@ -11,7 +10,14 @@ import Cart from "./components/Cart/Cart";
 function App() {
 
   // 🛒 carrito global
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => {
+    const savedCart = localStorage.getItem("cart");
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+
+  useEffect(() => {
+  localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
   return (
     <div className="App">
