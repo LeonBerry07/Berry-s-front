@@ -1,8 +1,10 @@
 import { useRef } from "react";
 import "./BeatCard.css";
 
-export default function BeatCard({ beat, addToCart }) {
+export default function BeatCard({ beat, addToCart, cart, setCart }) {
   const audioRef = useRef(null);
+
+  const isInCart = cart.some((item) => item.id === beat.id);
 
   function handlePreview() {
     const audio = audioRef.current;
@@ -36,13 +38,21 @@ export default function BeatCard({ beat, addToCart }) {
 
         <button
           className="btn-cart"
-          onClick={() => addToCart(beat)}
+          onClick={() => {
+            if (isInCart) {
+              const updatedCart = cart.filter(
+                (item) => item.id !== beat.id
+              );
+              setCart(updatedCart);
+            } else {
+              addToCart(beat);
+            }
+          }}
         >
-          Add to Cart 🛒
+          {isInCart ? "Added ✓" : "Add to Cart 🛒"}
         </button>
       </div>
 
-      {/* Audio oculto para reproducir el preview */}
       <audio
         ref={audioRef}
         src={beat.preview}

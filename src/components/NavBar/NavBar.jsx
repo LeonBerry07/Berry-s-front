@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./NavBar.css";
 
-function NavBar() {
+function NavBar({ cart }) {
   return (
     <nav className="navbar">
 
@@ -23,7 +23,7 @@ function NavBar() {
         </li>
 
         <li>
-          <Link to="/cart">Cart 🛒</Link>
+          <Link to="/cart">Cart 🛒 ({cart.length})</Link>
         </li>
 
         <li>

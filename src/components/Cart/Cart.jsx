@@ -11,6 +11,10 @@ export default function Cart({ cart, setCart }) {
   // total
   const total = cart.reduce((sum, item) => sum + item.price, 0);
 
+  function clearCart() {
+  setCart([]);
+  }
+
   return (
     <div className="cart-container">
       <h2>🛒 Your Cart</h2>
@@ -44,9 +48,21 @@ export default function Cart({ cart, setCart }) {
           <div className="cart-footer">
             <h3>Total: ${total}</h3>
 
-            <button className="checkout-btn">
-              Checkout 💳
+            <div className="cart-actions">
+            <button
+              onClick={clearCart}
+              className="clear-cart-btn"
+            >
+              Clear Cart 🗑️
             </button>
+
+            <button
+              className="checkout-btn"
+              onClick={() => window.location.href = "/checkout"}
+            >
+              Go to Checkout 💳
+            </button>
+            </div>
           </div>
         </>
       )}

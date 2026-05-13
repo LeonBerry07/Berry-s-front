@@ -6,6 +6,7 @@ import Home from "./components/Home/Home";
 import Login from "./components/Login/Login";
 import Catalogue from "./components/Catalogue/Catalogue";
 import Cart from "./components/Cart/Cart";
+import Checkout from "./components/Checkout/Checkout";
 
 function App() {
 
@@ -22,7 +23,7 @@ function App() {
   return (
     <div className="App">
 
-      <NavBar />
+      <NavBar cart={cart} />
 
       <header></header>
 
@@ -45,6 +46,11 @@ function App() {
             element={
               <Cart cart={cart} setCart={setCart} />
             }
+          />
+
+          <Route
+            path="/checkout"
+            element={<Checkout cart={cart} setCart={setCart} />}
           />
 
         </Routes>

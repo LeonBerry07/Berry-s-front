@@ -89,6 +89,8 @@ export default function Catalogue({ cart, setCart }) {
                 key={beat.id}
                 beat={beat}
                 addToCart={addToCart}
+                cart={cart}
+                setCart={setCart}
               />
             ))}
           </div>

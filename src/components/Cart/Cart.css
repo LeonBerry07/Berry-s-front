@@ -49,3 +49,21 @@
   cursor: pointer;
   border-radius: 8px;
 }
+
+.cart-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.clear-cart-btn {
+  background: #dc2626;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.clear-cart-btn:hover {
+  opacity: 0.9;
+}

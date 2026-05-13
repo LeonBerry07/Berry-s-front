@@ -56,3 +56,21 @@
 .btn-secondary:hover {
   background: #f3f3f3;
 }
+
+.btn-cart:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-cart {
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-cart:hover {
+  opacity: 0.9;
+}
