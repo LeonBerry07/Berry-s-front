@@ -1,0 +1,13 @@
+.orders-container {
+  padding: 40px;
+  color: white;
+  min-height: 100vh;
+  background: linear-gradient(to right, #111, #222);
+}
+
+.order-card {
+  background: #1f1f1f;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 10px;
+}

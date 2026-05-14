@@ -27,6 +27,10 @@ function NavBar({ cart }) {
         </li>
 
         <li>
+        <Link to="/orders">Orders 📦</Link>
+        </li>
+
+        <li>
           <Link to="/login" className="login-button">
             Login
           </Link>

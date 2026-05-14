@@ -1,22 +1,42 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Checkout.css";
 
 export default function Checkout({ cart, setCart }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
   const total = cart.reduce((sum, item) => sum + item.price, 0);
 
   function handleCheckout() {
-    if (!name || !email) {
-      alert("Please fill all fields");
-      return;
-    }
+  if (!name || !email) return;
 
-    alert(`Thank you ${name}! Purchase completed 🎉`);
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
 
-    // vaciar carrito después de comprar
-    setCart([]);
+  const newOrder = {
+    id: Date.now(),
+    name,
+    email,
+    items: cart,
+    total,
+    date: new Date().toISOString()
+  };
+
+  // obtener órdenes anteriores
+  const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
+
+  // guardar nueva orden
+  localStorage.setItem(
+    "orders",
+    JSON.stringify([...existingOrders, newOrder])
+  );
+
+  // vaciar carrito
+  setCart([]);
+
+  // ir a success
+  navigate("/success");
   }
 
   return (

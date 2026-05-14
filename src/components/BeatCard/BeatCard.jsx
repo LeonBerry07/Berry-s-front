@@ -1,10 +1,12 @@
 import { useRef } from "react";
 import "./BeatCard.css";
 
-export default function BeatCard({ beat, addToCart, cart, setCart }) {
+export default function BeatCard({ beat, addToCart, cart = [], setCart }) {
   const audioRef = useRef(null);
 
-  const isInCart = cart.some((item) => item.id === beat.id);
+  const isInCart = (cart || []).some(
+  (item) => item.id === beat.id
+  );
 
   function handlePreview() {
     const audio = audioRef.current;

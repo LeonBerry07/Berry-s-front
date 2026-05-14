@@ -1,0 +1,21 @@
+.success-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 40px;
+  text-align: center;
+  color: white;
+  background: linear-gradient(to right, #111, #222);
+}
+
+.success-button {
+  background: #8b5cf6;
+  color: white;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+}

@@ -7,6 +7,8 @@ import Login from "./components/Login/Login";
 import Catalogue from "./components/Catalogue/Catalogue";
 import Cart from "./components/Cart/Cart";
 import Checkout from "./components/Checkout/Checkout";
+import Success from "./components/Success/Success";
+import Orders from "./components/Orders/Orders";
 
 function App() {
 
@@ -52,6 +54,10 @@ function App() {
             path="/checkout"
             element={<Checkout cart={cart} setCart={setCart} />}
           />
+
+          <Route path="/success" element={<Success />} />
+
+          <Route path="/orders" element={<Orders />} />
 
         </Routes>
       </div>
