@@ -1,10 +1,11 @@
 .catalogue {
-  background: linear-gradient(to right, #8b5cf6, #3b82f6);
+  background: radial-gradient(circle at top, #1a1a2e, #0f0f1a);
   color: white;
   min-height: 100vh;
-  font-family: Arial, sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
 }
 
+/* HERO */
 .hero {
   text-align: center;
   padding: 100px 20px;
@@ -19,73 +20,89 @@
 .hero p {
   font-size: 1.2rem;
   margin-bottom: 30px;
+  color: rgba(255, 255, 255, 0.7);
 }
 
+/* botón principal */
 .btn-primary {
-  background: white;
-  color: #6b21a8;
+  background: #6d28d9;
+  color: white;
   padding: 12px 24px;
   border-radius: 50px;
   text-decoration: none;
   font-weight: bold;
+  transition: 0.2s;
+  display: inline-block;
 }
 
 .btn-primary:hover {
-  background: #f3f3f3;
+  background: #8b5cf6;
+  transform: scale(1.05);
 }
 
-.catalog-nav{
-display:flex;
-justify-content:center;
-gap:20px;
-padding:30px;
+/* NAV CATEGORÍAS */
+.catalog-nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 30px;
+  flex-wrap: wrap;
 }
 
-.category-btn{
-width:180px;
-height:120px;
-border:none;
-border-radius:10px;
-color:white;
-font-size:18px;
-font-weight:bold;
-cursor:pointer;
+/* BOTONES CATEGORÍA */
+.category-btn {
+  width: 180px;
+  height: 120px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
 
-background-size:cover;
-background-position:center;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
 
-display:flex;
-align-items:center;
-justify-content:center;
+  background-size: cover;
+  background-position: center;
 
-text-shadow:0 0 8px black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.category-btn:hover{
-transform:scale(1.05);
-transition:0.2s;
+/* overlay oscuro para mejorar legibilidad */
+.category-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
 }
 
-.new{
-background-image:url(https://unreal-music.com/wp-content/uploads/2023/04/LoFi-1024x538.jpg);
+.category-btn span {
+  position: relative;
+  z-index: 1;
 }
 
-.top{
-background-image:url("https://unreal-music.com/wp-content/uploads/2023/04/LoFi-1024x538.jpg");
+.category-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
 
-.lofi{
-background-image:url(https://unreal-music.com/wp-content/uploads/2023/04/LoFi-1024x538.jpg);
+/* IMÁGENES */
+.new,
+.top,
+.lofi,
+.ambient,
+.all {
+  background-image: url(https://unreal-music.com/wp-content/uploads/2023/04/LoFi-1024x538.jpg);
 }
 
-.ambient{
-background-image:url(https://unreal-music.com/wp-content/uploads/2023/04/LoFi-1024x538.jpg);
-}
-
-.all{
-background-image:url(https://unreal-music.com/wp-content/uploads/2023/04/LoFi-1024x538.jpg);
-}
-
+/* FEATURED */
 .featured {
   padding: 60px 20px;
   text-align: center;
@@ -96,16 +113,19 @@ background-image:url(https://unreal-music.com/wp-content/uploads/2023/04/LoFi-10
   margin-bottom: 40px;
 }
 
+/* GRID */
 .beat-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 20px;
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
+/* CTA */
 .cta {
-  background: #1f1d2b;
+  background: rgba(255, 255, 255, 0.03);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding: 60px 20px;
   text-align: center;
 }

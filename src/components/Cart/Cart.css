@@ -1,8 +1,9 @@
 .cart-container {
   padding: 40px;
-  color: #8b5cf6;
+  color: white;
 }
 
+/* LISTA */
 .cart-items {
   display: flex;
   flex-direction: column;
@@ -10,60 +11,93 @@
   margin-top: 20px;
 }
 
+/* ITEM */
 .cart-item {
   display: flex;
   justify-content: space-between;
-  background: #222;
-  padding: 15px;
-  border-radius: 10px;
   align-items: center;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 15px;
+  border-radius: 12px;
+
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.cart-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* lado derecho */
 .cart-right {
   display: flex;
   gap: 15px;
   align-items: center;
 }
 
+/* REMOVE */
 .remove-btn {
-  background: red;
-  border: none;
-  color: white;
-  padding: 5px 10px;
+  background: transparent;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 6px 12px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 8px;
+  transition: 0.2s;
 }
 
+.remove-btn:hover {
+  background: #ef4444;
+  color: white;
+}
+
+/* FOOTER */
 .cart-footer {
   margin-top: 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* CHECKOUT (acción principal) */
 .checkout-btn {
-  background: #8b5cf6;
+  background: #6d28d9;
   border: none;
   padding: 10px 20px;
   color: white;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 10px;
+  transition: 0.2s;
 }
 
+.checkout-btn:hover {
+  background: #8b5cf6;
+  transform: scale(1.03);
+}
+
+/* ACTIONS */
 .cart-actions {
   display: flex;
   gap: 10px;
 }
 
+/* CLEAR CART */
 .clear-cart-btn {
-  background: #dc2626;
-  border: none;
+  background: transparent;
+  border: 1px solid #dc2626;
   padding: 10px 20px;
-  color: white;
+  color: #dc2626;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 10px;
+  transition: 0.2s;
 }
 
 .clear-cart-btn:hover {
-  opacity: 0.9;
+  background: #dc2626;
+  color: white;
 }

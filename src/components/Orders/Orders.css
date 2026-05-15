@@ -2,12 +2,25 @@
   padding: 40px;
   color: white;
   min-height: 100vh;
-  background: linear-gradient(to right, #111, #222);
+
+  background: radial-gradient(circle at top, #1a1a2e, #0f0f1a);
 }
 
+/* CARD DE ORDEN */
 .order-card {
-  background: #1f1f1f;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
   padding: 20px;
   margin-top: 20px;
-  border-radius: 10px;
+  border-radius: 12px;
+
+  backdrop-filter: blur(10px);
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }

@@ -1,39 +1,47 @@
 .home {
-  background: linear-gradient(to right, #6d28d9);
+  background: radial-gradient(circle at top, #1a1a2e, #0f0f1a);
   color: white;
   min-height: 100vh;
-  font-family: Arial, sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
 }
 
+/* HERO */
 .hero {
   text-align: center;
-  padding: 100px 20px;
+  padding: 110px 20px;
 }
 
 .hero h1 {
-  font-size: 3rem;
-  font-weight: bold;
+  font-size: 3.2rem;
+  font-weight: 700;
   margin-bottom: 20px;
+  letter-spacing: -0.5px;
 }
 
 .hero p {
   font-size: 1.2rem;
   margin-bottom: 30px;
+  color: rgba(255, 255, 255, 0.7);
 }
 
+/* botón principal */
 .btn-primary {
-  background: white;
-  color: #6b21a8;
-  padding: 12px 24px;
+  background: #6d28d9;
+  color: white;
+  padding: 12px 26px;
   border-radius: 50px;
   text-decoration: none;
   font-weight: bold;
+  display: inline-block;
+  transition: 0.2s;
 }
 
 .btn-primary:hover {
-  background: #f3f3f3;
+  background: #8b5cf6;
+  transform: scale(1.05);
 }
 
+/* FEATURED */
 .featured {
   padding: 60px 20px;
   text-align: center;
@@ -44,16 +52,19 @@
   margin-bottom: 40px;
 }
 
+/* GRID */
 .beat-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 20px;
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
+/* CTA */
 .cta {
-  background: #1f1d2b;
-  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 70px 20px;
   text-align: center;
 }

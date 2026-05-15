@@ -1,38 +1,30 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background: transparent;
+}
+
+/* asegura que el contenido principal crezca bien */
+.App > div {
+  flex: 1;
+}
+
+/* ELIMINAMOS estilos viejos de CRA que ya no usás */
+.App-logo {
+  display: none;
+}
+
+.App-header {
+  display: none;
 }
 
 .App-link {
-  color: #61dafb;
+  color: inherit;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* opcional: transición global suave */
+* {
+  box-sizing: border-box;
+  transition: background 0.2s ease, color 0.2s ease;
 }
