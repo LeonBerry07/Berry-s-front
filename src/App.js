@@ -9,17 +9,30 @@ import Cart from "./components/Cart/Cart";
 import Checkout from "./components/Checkout/Checkout";
 import Success from "./components/Success/Success";
 import Orders from "./components/Orders/Orders";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import Register from "./components/Register/Register";
 
 function App() {
 
   // 🛒 carrito global
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem("cart");
+    if (!user) return [];
+
+    const savedCart = localStorage.getItem(`cart_${user.email}`);
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
   useEffect(() => {
-  localStorage.setItem("cart", JSON.stringify(cart));
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (user) {
+      localStorage.setItem(
+        `cart_${user.email}`,
+        JSON.stringify(cart)
+      );
+    }
   }, [cart]);
 
   return (
@@ -46,18 +59,33 @@ function App() {
           <Route
             path="/cart"
             element={
-              <Cart cart={cart} setCart={setCart} />
+              <ProtectedRoute>
+                <Cart cart={cart} setCart={setCart} />
+              </ProtectedRoute>
             }
           />
 
           <Route
             path="/checkout"
-            element={<Checkout cart={cart} setCart={setCart} />}
+            element={
+              <ProtectedRoute>
+                <Checkout cart={cart} setCart={setCart} />
+              </ProtectedRoute>
+            }
           />
 
           <Route path="/success" element={<Success />} />
 
-          <Route path="/orders" element={<Orders />} />
+          <Route
+            path="/orders"
+            element={
+              <ProtectedRoute>
+                <Orders />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="/register" element={<Register />} />
 
         </Routes>
       </div>

@@ -1,8 +1,24 @@
+import "./NavBar.css";
 import React from "react";
 import { Link } from "react-router-dom";
-import "./NavBar.css";
+import { useContext } from "react";
+import { AuthContext } from "../Context/AuthContext";
 
 function NavBar({ cart }) {
+  const { user, logout } = useContext(AuthContext);
+
+  function handleLogout() {
+    const savedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (savedUser) {
+      localStorage.removeItem(`cart_${savedUser.email}`);
+    }
+
+    logout();
+
+    window.location.href = "/";
+  }
+
   return (
     <nav className="navbar">
 
@@ -23,19 +39,32 @@ function NavBar({ cart }) {
         </li>
 
         <li>
-          <Link to="/cart">Cart 🛒 ({cart.length})</Link>
+          <Link to="/cart">Cart 🛒 ({cart?.length || 0})</Link>
         </li>
 
         <li>
-        <Link to="/orders">Orders 📦</Link>
+          <Link to="/orders">Orders 📦</Link>
         </li>
 
-        <li>
-          <Link to="/login" className="login-button">
-            Login
-          </Link>
-        </li>
+        {user ? (
+          <>
+            <li>
+              <span style={{ color: "white" }}>
+                👋 {user.name}
+              </span>
+            </li>
 
+            <li>
+              <button onClick={handleLogout}>
+                Logout 🚪
+              </button>
+            </li>
+          </>
+        ) : (
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
+        )}
       </ul>
 
     </nav>

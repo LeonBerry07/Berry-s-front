@@ -1,0 +1,70 @@
+/* Fondo general */
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to right, #ec4899, #8b5cf6, #3b82f6);
+  font-family: Arial, sans-serif;
+}
+
+/* Formulario */
+.register-form {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 40px;
+  border-radius: 12px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Título */
+.register-form h2 {
+  color: white;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Inputs */
+.register-form input {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+}
+
+/* Botón */
+.register-form button {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #22c55e;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.register-form button:hover {
+  background: #16a34a;
+  transform: scale(1.03);
+}
+
+/* Link login */
+.register-form p {
+  color: white;
+  text-align: center;
+  font-size: 14px;
+}
+
+.register-form a {
+  color: #93c5fd;
+  text-decoration: none;
+}
+
+.register-form a:hover {
+  text-decoration: underline;
+}

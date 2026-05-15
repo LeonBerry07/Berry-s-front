@@ -33,3 +33,16 @@
   /* color: #ff6b81; */
   color: #b1b1b1;
 }
+
+.navbar-links button {
+  background: #ef4444;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.navbar-links button:hover {
+  opacity: 0.8;
+}
