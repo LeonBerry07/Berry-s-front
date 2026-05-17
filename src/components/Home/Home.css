@@ -1,5 +1,8 @@
 .home {
-  background: radial-gradient(circle at top, #1a1a2e, #0f0f1a);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(139, 92, 246, 0.18), transparent 35%),
+    radial-gradient(circle at 80% 10%, rgba(59, 130, 246, 0.12), transparent 35%),
+    radial-gradient(circle at top, #1a1a2e, #0f0f1a 70%);
   color: white;
   min-height: 100vh;
   font-family: "Inter", system-ui, sans-serif;
@@ -8,63 +11,124 @@
 /* HERO */
 .hero {
   text-align: center;
-  padding: 110px 20px;
+  padding: 130px 20px 110px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .hero h1 {
-  font-size: 3.2rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-  letter-spacing: -0.5px;
+  font-size: clamp(2.8rem, 6vw, 4.8rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  margin-bottom: 24px;
+
+  background: linear-gradient(135deg, #ffffff 0%, #d8b4fe 45%, #93c5fd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
 .hero p {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.25rem;
+  line-height: 1.8;
+  margin-bottom: 36px;
+  color: rgba(255, 255, 255, 0.72);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* botón principal */
+/* BOTÓN PRINCIPAL */
 .btn-primary {
-  background: #6d28d9;
-  color: white;
-  padding: 12px 26px;
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: bold;
   display: inline-block;
-  transition: 0.2s;
+  padding: 14px 30px;
+  border-radius: 999px;
+
+  background: linear-gradient(135deg, #6d28d9, #8b5cf6);
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+
+  box-shadow:
+    0 10px 30px rgba(109, 40, 217, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+
+  transition: all 0.25s ease;
 }
 
 .btn-primary:hover {
-  background: #8b5cf6;
-  transform: scale(1.05);
+  transform: translateY(-3px) scale(1.04);
+  box-shadow:
+    0 16px 40px rgba(139, 92, 246, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
 /* FEATURED */
 .featured {
-  padding: 60px 20px;
+  padding: 80px 20px;
   text-align: center;
 }
 
 .featured h2 {
-  font-size: 2rem;
-  margin-bottom: 40px;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 50px;
 }
 
 /* GRID */
 .beat-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-  max-width: 1100px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 /* CTA */
 .cta {
-  background: rgba(255, 255, 255, 0.03);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 70px 20px;
+  margin-top: 60px;
+  padding: 90px 20px;
   text-align: center;
+
+  background: rgba(255, 255, 255, 0.035);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.cta h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+}
+
+.cta p {
+  max-width: 650px;
+  margin: 0 auto 30px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .hero {
+    padding: 100px 20px 80px;
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+  }
+
+  .featured {
+    padding: 60px 20px;
+  }
+
+  .cta {
+    padding: 70px 20px;
+  }
 }
