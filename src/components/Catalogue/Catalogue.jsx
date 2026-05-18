@@ -1,6 +1,6 @@
+import "./Catalogue.css";
 import { useEffect, useState } from "react";
 import BeatCard from "../BeatCard/BeatCard";
-import "./Catalogue.css";
 
 export default function Catalogue() {
   const [beats, setBeats] = useState([]);
@@ -33,24 +33,68 @@ export default function Catalogue() {
   }, [selectedCategory]);
 
   return (
-    <div className="home">
+    <div className="catalogue">
+      {/* FILTROS */}
       <section className="featured">
         <div className="catalog-nav">
-          <button onClick={() => setSelectedCategory("new")}>New Beats</button>
-          <button onClick={() => setSelectedCategory("top")}>Top Beats</button>
-          <button onClick={() => setSelectedCategory("lofi")}>LoFi</button>
-          <button onClick={() => setSelectedCategory("ambient")}>Ambient</button>
-          <button onClick={() => setSelectedCategory("all")}>All</button>
+          <button
+            onClick={() => setSelectedCategory("new")}
+            className={`category-btn new ${
+              selectedCategory === "new" ? "active" : ""
+            }`}
+          >
+            <span>New Beats</span>
+          </button>
+
+          <button
+            onClick={() => setSelectedCategory("top")}
+            className={`category-btn top ${
+              selectedCategory === "top" ? "active" : ""
+            }`}
+          >
+            <span>Top Beats</span>
+          </button>
+
+          <button
+            onClick={() => setSelectedCategory("lofi")}
+            className={`category-btn lofi ${
+              selectedCategory === "lofi" ? "active" : ""
+            }`}
+          >
+            <span>Lo-Fi</span>
+          </button>
+
+          <button
+            onClick={() => setSelectedCategory("ambient")}
+            className={`category-btn ambient ${
+              selectedCategory === "ambient" ? "active" : ""
+            }`}
+          >
+            <span>Ambient</span>
+          </button>
+
+          <button
+            onClick={() => setSelectedCategory("all")}
+            className={`category-btn all ${
+              selectedCategory === "all" ? "active" : ""
+            }`}
+          >
+            <span>All</span>
+          </button>
         </div>
       </section>
 
+      {/* CATÁLOGO */}
       <section className="featured">
         {loading ? (
           <p>Cargando beats...</p>
         ) : (
           <div className="beat-grid">
             {beats.map((beat) => (
-              <BeatCard key={beat.id} beat={beat} />
+              <BeatCard
+                key={beat.id}
+                beat={beat}
+              />
             ))}
           </div>
         )}

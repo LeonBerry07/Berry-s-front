@@ -3,9 +3,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
+import { useCart } from "../CartContext/CartContext";
 
-function NavBar({ cart }) {
+function NavBar() {
   const { user, logout } = useContext(AuthContext);
+  const { cart } = useCart();
 
   function handleLogout() {
     const savedUser = JSON.parse(localStorage.getItem("user"));

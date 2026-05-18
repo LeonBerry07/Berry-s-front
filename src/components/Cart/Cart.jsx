@@ -1,19 +1,11 @@
 import "./Cart.css";
+import { useCart } from "../CartContext/CartContext";
 
-export default function Cart({ cart, setCart }) {
-
-  // eliminar item
-  function removeFromCart(id) {
-    const updatedCart = cart.filter((item) => item.id !== id);
-    setCart(updatedCart);
-  }
+export default function Cart() {
+  const { cart, removeFromCart, clearCart } = useCart();
 
   // total
   const total = cart.reduce((sum, item) => sum + item.price, 0);
-
-  function clearCart() {
-  setCart([]);
-  }
 
   return (
     <div className="cart-container">
@@ -49,19 +41,19 @@ export default function Cart({ cart, setCart }) {
             <h3>Total: ${total}</h3>
 
             <div className="cart-actions">
-            <button
-              onClick={clearCart}
-              className="clear-cart-btn"
-            >
-              Clear Cart 🗑️
-            </button>
+              <button
+                onClick={clearCart}
+                className="clear-cart-btn"
+              >
+                Clear Cart 🗑️
+              </button>
 
-            <button
-              className="checkout-btn"
-              onClick={() => window.location.href = "/checkout"}
-            >
-              Go to Checkout 💳
-            </button>
+              <button
+                className="checkout-btn"
+                onClick={() => (window.location.href = "/checkout")}
+              >
+                Go to Checkout 💳
+              </button>
             </div>
           </div>
         </>

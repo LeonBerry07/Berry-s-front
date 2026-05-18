@@ -1,19 +1,13 @@
-import { useRef, useContext } from "react";
 import "./BeatCard.css";
-import { AuthContext } from "../Context/AuthContext";
+import { useRef } from "react";
+import { useCart } from "../CartContext/CartContext";
 
-export default function BeatCard({ beat, addToCart, cart = [], setCart }) {
+export default function BeatCard({ beat }) {
   const audioRef = useRef(null);
 
-  const { cart: globalCart, addToCart: ctxAdd, removeFromCart } =
-    useContext(AuthContext);
+  const { cart, addToCart, removeFromCart } = useCart();
 
-  // usa context si existe, si no fallback a props (compatibilidad)
-  const activeCart = globalCart || cart;
-
-  const isInCart = (activeCart || []).some(
-    (item) => item.id === beat.id
-  );
+  const isInCart = cart.some((item) => item.id === beat.id);
 
   function handlePreview() {
     const audio = audioRef.current;
@@ -29,22 +23,8 @@ export default function BeatCard({ beat, addToCart, cart = [], setCart }) {
   }
 
   function handleCartClick() {
-    // PRIORIDAD: Context
-    if (globalCart) {
-      if (isInCart) {
-        removeFromCart(beat.id);
-      } else {
-        ctxAdd(beat);
-      }
-      return;
-    }
-
-    // fallback a props (no rompe tu sistema viejo)
     if (isInCart) {
-      const updatedCart = cart.filter(
-        (item) => item.id !== beat.id
-      );
-      setCart(updatedCart);
+      removeFromCart(beat.id);
     } else {
       addToCart(beat);
     }
@@ -60,17 +40,11 @@ export default function BeatCard({ beat, addToCart, cart = [], setCart }) {
       <div className="beat-footer">
         <span>${beat.price}</span>
 
-        <button
-          className="btn-preview"
-          onClick={handlePreview}
-        >
+        <button className="btn-preview" onClick={handlePreview}>
           Preview ▶
         </button>
 
-        <button
-          className="btn-cart"
-          onClick={handleCartClick}
-        >
+        <button className="btn-cart" onClick={handleCartClick}>
           {isInCart ? "Added ✓" : "Add to Cart 🛒"}
         </button>
       </div>
