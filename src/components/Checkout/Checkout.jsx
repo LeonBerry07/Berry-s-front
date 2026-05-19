@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Checkout.css";
+import { useCart } from "../CartContext/CartContext";
 
-export default function Checkout({ cart, setCart }) {
+export default function Checkout() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
+
+  // Carrito global desde Context
+  const { cart, setCart } = useCart();
 
   const total = cart.reduce(
     (sum, item) => sum + Number(item.price || 0),
@@ -29,7 +33,9 @@ export default function Checkout({ cart, setCart }) {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        alert("You must be logged in to complete your purchase.");
+        alert(
+          "You must be logged in to complete your purchase."
+        );
         navigate("/login");
         return;
       }
@@ -55,21 +61,30 @@ export default function Checkout({ cart, setCart }) {
       const data = await response.json();
 
       if (!response.ok) {
-        alert(data.message || "Error creating order.");
+        alert(
+          data.message || "Error creating order."
+        );
         return;
       }
 
-      // Vaciar carrito
+      // Vaciar carrito después de una compra exitosa
       setCart([]);
 
       // Mensaje de éxito
-      alert("Purchase completed successfully 🎉");
+      alert(
+        "Purchase completed successfully 🎉"
+      );
 
       // Redirigir a la página de éxito
       navigate("/success");
     } catch (error) {
-      console.error("Checkout error:", error);
-      alert("Server error while processing your purchase.");
+      console.error(
+        "Checkout error:",
+        error
+      );
+      alert(
+        "Server error while processing your purchase."
+      );
     }
   }
 
@@ -95,7 +110,9 @@ export default function Checkout({ cart, setCart }) {
               </div>
             ))}
 
-            <h3>Total: ${total.toFixed(2)}</h3>
+            <h3>
+              Total: ${total.toFixed(2)}
+            </h3>
           </>
         )}
       </div>

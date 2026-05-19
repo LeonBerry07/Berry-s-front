@@ -1,7 +1,11 @@
 import "./Login.css";
-import React, { useState, useContext } from "react";
+import React, {
+  useState,
+  useContext,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
+import { useCart } from "../CartContext/CartContext";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -9,6 +13,9 @@ function Login() {
   const navigate = useNavigate();
 
   const { login } = useContext(AuthContext);
+
+  // Cargar carrito del usuario después del login
+  const { loadUserCart } = useCart();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -21,7 +28,10 @@ function Login() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({
+            email,
+            password,
+          }),
         }
       );
 
@@ -33,11 +43,20 @@ function Login() {
       }
 
       // guardar sesión (NO TOCO TU SISTEMA)
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem(
+        "token",
+        data.token
+      );
+      localStorage.setItem(
+        "user",
+        JSON.stringify(data.user)
+      );
 
-      // contexto global
+      // contexto global de autenticación
       login(data.user, data.token);
+
+      // cargar el carrito correspondiente a este usuario
+      loadUserCart();
 
       alert("Login successful 🎉");
 
@@ -50,14 +69,19 @@ function Login() {
 
   return (
     <div className="login-container">
-      <form className="login-form" onSubmit={handleSubmit}>
+      <form
+        className="login-form"
+        onSubmit={handleSubmit}
+      >
         <h2>Iniciar Sesión</h2>
 
         <input
           type="email"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) =>
+            setEmail(e.target.value)
+          }
           required
         />
 
@@ -65,15 +89,21 @@ function Login() {
           type="password"
           placeholder="Contraseña"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) =>
+            setPassword(e.target.value)
+          }
           required
         />
 
-        <button type="submit">Ingresar</button>
+        <button type="submit">
+          Ingresar
+        </button>
 
         <p>
           Don't have an account?{" "}
-          <a href="/register">Create one</a>
+          <a href="/register">
+            Create one
+          </a>
         </p>
       </form>
     </div>

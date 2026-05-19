@@ -7,6 +7,26 @@ export default function Orders() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Formatear fecha en formato argentino
+  function formatDate(dateString) {
+    if (!dateString) return "Unknown date";
+
+    const date = new Date(dateString);
+
+    // Verificar que la fecha sea válida
+    if (isNaN(date.getTime())) {
+      return "Invalid date";
+    }
+
+    return date.toLocaleString("es-AR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+
   useEffect(() => {
     async function fetchOrders() {
       try {
@@ -34,14 +54,19 @@ export default function Orders() {
         console.log("Orders received:", data);
 
         if (!response.ok) {
-          console.error(data.message || "Error loading orders");
+          console.error(
+            data.message || "Error loading orders"
+          );
           return;
         }
 
         // Asegurarnos de que siempre sea un array
         setOrders(Array.isArray(data) ? data : []);
       } catch (error) {
-        console.error("Error loading orders:", error);
+        console.error(
+          "Error loading orders:",
+          error
+        );
       } finally {
         setLoading(false);
       }
@@ -60,22 +85,49 @@ export default function Orders() {
         <p>You have no orders yet.</p>
       ) : (
         orders.map((order) => (
-          <div key={order.id} className="order-card">
+          <div
+            key={order.id}
+            className="order-card"
+          >
             <h3>Order #{order.id}</h3>
 
             <p>
               Total:{" "}
               <strong>
-                ${Number(order.total || 0).toFixed(2)}
+                $
+                {Number(
+                  order.total || 0
+                ).toFixed(2)}
               </strong>
             </p>
 
             <p>
               Date:{" "}
-              {order.created_at
-                ? new Date(order.created_at).toLocaleDateString()
-                : "Unknown date"}
+              {formatDate(
+                order.date || order.created_at
+              )}
             </p>
+
+            {order.items &&
+              order.items.length > 0 && (
+                <>
+                  <h4>Items:</h4>
+                  <ul>
+                    {order.items.map(
+                      (item) => (
+                        <li
+                          key={item.id}
+                        >
+                          {item.title} - $
+                          {Number(
+                            item.price || 0
+                          ).toFixed(2)}
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </>
+              )}
           </div>
         ))
       )}

@@ -1,11 +1,23 @@
 import "./Cart.css";
 import { useCart } from "../CartContext/CartContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
-  const { cart, removeFromCart, clearCart } = useCart();
+  // Usar el MISMO carrito global que usa Checkout
+  const {
+    cart,
+    removeFromCart,
+    clearCart,
+  } = useCart();
 
-  // total
-  const total = cart.reduce((sum, item) => sum + item.price, 0);
+  const navigate = useNavigate();
+
+  // Total
+  const total = cart.reduce(
+    (sum, item) =>
+      sum + Number(item.price || 0),
+    0
+  );
 
   return (
     <div className="cart-container">
@@ -17,17 +29,31 @@ export default function Cart() {
         <>
           <div className="cart-items">
             {cart.map((beat) => (
-              <div key={beat.id} className="cart-item">
+              <div
+                key={beat.id}
+                className="cart-item"
+              >
                 <div>
                   <h3>{beat.title}</h3>
-                  <p>Prod. {beat.producer}</p>
+                  <p>
+                    Prod. {beat.producer}
+                  </p>
                 </div>
 
                 <div className="cart-right">
-                  <span>${beat.price}</span>
+                  <span>
+                    $
+                    {Number(
+                      beat.price || 0
+                    ).toFixed(2)}
+                  </span>
 
                   <button
-                    onClick={() => removeFromCart(beat.id)}
+                    onClick={() =>
+                      removeFromCart(
+                        beat.id
+                      )
+                    }
                     className="remove-btn"
                   >
                     ✕
@@ -38,7 +64,10 @@ export default function Cart() {
           </div>
 
           <div className="cart-footer">
-            <h3>Total: ${total}</h3>
+            <h3>
+              Total: $
+              {total.toFixed(2)}
+            </h3>
 
             <div className="cart-actions">
               <button
@@ -50,7 +79,9 @@ export default function Cart() {
 
               <button
                 className="checkout-btn"
-                onClick={() => (window.location.href = "/checkout")}
+                onClick={() =>
+                  navigate("/checkout")
+                }
               >
                 Go to Checkout 💳
               </button>
