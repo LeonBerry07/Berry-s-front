@@ -1,70 +1,176 @@
-/* Fondo general */
+/* CONTENEDOR GENERAL */
 .register-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to right, #ec4899, #8b5cf6, #3b82f6);
-  font-family: Arial, sans-serif;
+  padding: 40px 20px;
+
+  /* Fondo acorde al resto del sitio */
+  background:
+    radial-gradient(circle at top, rgba(139, 92, 246, 0.18), transparent 45%),
+    radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.12), transparent 40%),
+    radial-gradient(circle at bottom left, rgba(236, 72, 153, 0.08), transparent 35%),
+    #0f0f1a;
+
+  font-family: "Inter", system-ui, sans-serif;
 }
 
-/* Formulario */
+/* TARJETA DEL FORMULARIO */
 .register-form {
-  background: rgba(0, 0, 0, 0.6);
-  padding: 40px;
-  border-radius: 12px;
-  width: 320px;
+  width: 100%;
+  max-width: 420px;
+
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  gap: 16px;
+
+  padding: 42px 38px;
+  border-radius: 24px;
+
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.45),
+    0 0 40px rgba(139, 92, 246, 0.08);
+
+  color: white;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Título */
+.register-form:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 28px 80px rgba(0, 0, 0, 0.55),
+    0 0 60px rgba(139, 92, 246, 0.12);
+}
+
+/* TÍTULO */
 .register-form h2 {
-  color: white;
+  margin: 0 0 8px;
   text-align: center;
-  margin-bottom: 10px;
+
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+
+  background: linear-gradient(90deg, #ffffff, #c4b5fd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* Inputs */
+/* INPUTS */
 .register-form input {
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+
+  font-size: 0.95rem;
+  font-family: inherit;
+
   outline: none;
-  font-size: 14px;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
 }
 
-/* Botón */
+.register-form input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.register-form input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(139, 92, 246, 0.6);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.18);
+}
+
+/* BOTÓN */
 .register-form button {
-  padding: 12px;
+  margin-top: 6px;
+  padding: 14px 18px;
+
   border: none;
-  border-radius: 8px;
-  background: #22c55e;
+  border-radius: 14px;
+
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
   color: white;
-  font-weight: bold;
+
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.3px;
+
   cursor: pointer;
-  transition: 0.2s;
+
+  box-shadow: 0 10px 25px rgba(109, 40, 217, 0.35);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
 }
 
 .register-form button:hover {
-  background: #16a34a;
-  transform: scale(1.03);
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 16px 35px rgba(109, 40, 217, 0.45);
+  filter: brightness(1.08);
 }
 
-/* Link login */
+.register-form button:active {
+  transform: translateY(0);
+}
+
+.register-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* TEXTO INFERIOR */
 .register-form p {
-  color: white;
+  margin-top: 10px;
   text-align: center;
-  font-size: 14px;
+
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.65);
 }
 
+/* LINKS */
 .register-form a {
-  color: #93c5fd;
+  color: #c4b5fd;
   text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
 }
 
 .register-form a:hover {
+  color: #ffffff;
   text-decoration: underline;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .register-container {
+    padding: 24px 16px;
+  }
+
+  .register-form {
+    padding: 32px 24px;
+    border-radius: 20px;
+  }
+
+  .register-form h2 {
+    font-size: 1.7rem;
+  }
 }
