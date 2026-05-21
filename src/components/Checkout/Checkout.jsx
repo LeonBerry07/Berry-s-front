@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Checkout.css";
 import { useCart } from "../CartContext/CartContext";
@@ -6,10 +6,20 @@ import { useCart } from "../CartContext/CartContext";
 export default function Checkout() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [loadingPayment, setLoadingPayment] =
+    useState(false);
+
   const navigate = useNavigate();
 
   // Carrito global desde Context
-  const { cart, setCart } = useCart();
+  const { cart, loadUserCart } = useCart();
+
+  // Al entrar al Checkout, recargar el carrito del usuario
+  useEffect(() => {
+    if (loadUserCart) {
+      loadUserCart();
+    }
+  }, [loadUserCart]);
 
   const total = cart.reduce(
     (sum, item) => sum + Number(item.price || 0),
@@ -29,31 +39,22 @@ export default function Checkout() {
     }
 
     try {
-      // Obtener token del usuario logueado
-      const token = localStorage.getItem("token");
+      setLoadingPayment(true);
 
-      if (!token) {
-        alert(
-          "You must be logged in to complete your purchase."
-        );
-        navigate("/login");
-        return;
-      }
-
-      // Enviar la orden al backend
+      // Crear preferencia de pago en el backend
       const response = await fetch(
-        "http://localhost:3001/api/orders",
+        "http://localhost:3001/api/payments/create-preference",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            name,
-            email,
             items: cart,
-            total,
+            payer: {
+              name,
+              email,
+            },
           }),
         }
       );
@@ -62,29 +63,45 @@ export default function Checkout() {
 
       if (!response.ok) {
         alert(
-          data.message || "Error creating order."
+          data.message ||
+            "Error creating payment preference."
         );
+        setLoadingPayment(false);
         return;
       }
 
-      // Vaciar carrito después de una compra exitosa
-      setCart([]);
+      // Redirigir al checkout de Mercado Pago
+      const checkoutUrl =
+        data.init_point ||
+        data.sandbox_init_point;
 
-      // Mensaje de éxito
-      alert(
-        "Purchase completed successfully 🎉"
+      if (!checkoutUrl) {
+        alert(
+          "Mercado Pago did not return a payment URL."
+        );
+        setLoadingPayment(false);
+        return;
+      }
+
+      // Guardar datos temporalmente para usarlos luego en Success
+      localStorage.setItem(
+        "pendingOrder",
+        JSON.stringify({
+          name,
+          email,
+          items: cart,
+          total,
+        })
       );
 
-      // Redirigir a la página de éxito
-      navigate("/success");
+      // Redirección al checkout de Mercado Pago
+      window.location.href = checkoutUrl;
     } catch (error) {
-      console.error(
-        "Checkout error:",
-        error
-      );
+      console.error("Checkout error:", error);
       alert(
-        "Server error while processing your purchase."
+        "Server error while creating payment preference."
       );
+      setLoadingPayment(false);
     }
   }
 
@@ -106,13 +123,16 @@ export default function Checkout() {
                 className="checkout-item"
               >
                 <span>{item.title}</span>
-                <span>${item.price}</span>
+                <span>
+                  $
+                  {Number(
+                    item.price || 0
+                  ).toFixed(2)}
+                </span>
               </div>
             ))}
 
-            <h3>
-              Total: ${total.toFixed(2)}
-            </h3>
+            <h3>Total: ${total.toFixed(2)}</h3>
           </>
         )}
       </div>
@@ -139,9 +159,13 @@ export default function Checkout() {
 
         <button
           onClick={handleCheckout}
-          disabled={cart.length === 0}
+          disabled={
+            cart.length === 0 || loadingPayment
+          }
         >
-          Confirm Purchase 💳
+          {loadingPayment
+            ? "Redirecting to Mercado Pago..."
+            : "Pay with Mercado Pago 💳"}
         </button>
       </div>
     </div>
