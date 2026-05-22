@@ -112,20 +112,45 @@ export default function Orders() {
               order.items.length > 0 && (
                 <>
                   <h4>Items:</h4>
-                  <ul>
-                    {order.items.map(
-                      (item) => (
-                        <li
-                          key={item.id}
-                        >
-                          {item.title} - $
-                          {Number(
-                            item.price || 0
-                          ).toFixed(2)}
-                        </li>
-                      )
-                    )}
-                  </ul>
+
+                  <div className="order-items">
+                    {order.items.map((item) => (
+                      <div
+                        key={item.id}
+                        className="order-item"
+                      >
+                        <div>
+                          <strong>
+                            {item.title}
+                          </strong>
+
+                          <p>
+                            $
+                            {Number(
+                              item.price || 0
+                            ).toFixed(2)}
+                          </p>
+                        </div>
+
+                        {/* BOTÓN DESCARGA */}
+                        {item.file ? (
+                          <a
+                            href={`http://localhost:3001/beats/${item.file}`}
+                            download
+                            className="download-btn"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            Download 🎵
+                          </a>
+                        ) : (
+                          <span className="no-file">
+                            No file
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </>
               )}
           </div>
