@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./Checkout.css";
 import { useCart } from "../CartContext/CartContext";
 
@@ -8,6 +8,9 @@ export default function Checkout() {
   const [processing, setProcessing] = useState(false);
 
   const { cart, setCart, loadUserCart } = useCart();
+
+  // evita múltiples requests incluso si React renderiza dos veces
+  const hasProcessed = useRef(false);
 
   // cargar carrito del usuario
   useEffect(() => {
@@ -26,7 +29,7 @@ export default function Checkout() {
   // MERCADO PAGO REAL
   // =========================
   async function handleCheckout() {
-    if (processing) return;
+    if (processing || hasProcessed.current) return;
 
     if (!name || !email) {
       alert("Please complete all fields.");
@@ -47,6 +50,7 @@ export default function Checkout() {
 
     try {
       setProcessing(true);
+      hasProcessed.current = true;
 
       const response = await fetch(
         "http://localhost:3001/api/payments/create-preference",
@@ -71,13 +75,18 @@ export default function Checkout() {
       console.log("Preference response:", data);
 
       if (!response.ok) {
+        hasProcessed.current = false;
+
         alert(data.message || "Error creating payment.");
         return;
       }
 
       window.location.href = data.init_point;
     } catch (error) {
+      hasProcessed.current = false;
+
       console.error("Checkout error:", error);
+
       alert("Server error while processing payment.");
     } finally {
       setProcessing(false);
@@ -88,7 +97,7 @@ export default function Checkout() {
   // PAGO SIMULADO
   // =========================
   async function handleFakePayment() {
-    if (processing) return;
+    if (processing || hasProcessed.current) return;
 
     if (!name || !email) {
       alert("Please complete all fields.");
@@ -109,6 +118,7 @@ export default function Checkout() {
 
     try {
       setProcessing(true);
+      hasProcessed.current = true;
 
       const response = await fetch(
         "http://localhost:3001/api/orders",
@@ -134,6 +144,8 @@ export default function Checkout() {
       console.log("Fake payment response:", data);
 
       if (!response.ok) {
+        hasProcessed.current = false;
+
         alert(data.message || "Error creating fake order.");
         return;
       }
@@ -151,7 +163,10 @@ export default function Checkout() {
 
       window.location.href = "/success?status=approved";
     } catch (error) {
+      hasProcessed.current = false;
+
       console.error("Fake payment error:", error);
+
       alert("Error simulating payment.");
     } finally {
       setProcessing(false);
@@ -171,9 +186,16 @@ export default function Checkout() {
         ) : (
           <>
             {cart.map((item) => (
-              <div key={item.id} className="checkout-item">
+              <div
+                key={item.id}
+                className="checkout-item"
+              >
                 <span>{item.title}</span>
-                <span>${Number(item.price || 0).toFixed(2)}</span>
+
+                <span>
+                  $
+                  {Number(item.price || 0).toFixed(2)}
+                </span>
               </div>
             ))}
 
@@ -188,28 +210,38 @@ export default function Checkout() {
           type="text"
           placeholder="Your name"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) =>
+            setName(e.target.value)
+          }
         />
 
         <input
           type="email"
           placeholder="Your email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) =>
+            setEmail(e.target.value)
+          }
         />
 
         {/* MERCADO PAGO REAL */}
         <button
           onClick={handleCheckout}
-          disabled={cart.length === 0 || processing}
+          disabled={
+            cart.length === 0 || processing
+          }
         >
-          {processing ? "Processing..." : "Pay with Mercado Pago 💳"}
+          {processing
+            ? "Processing..."
+            : "Pay with Mercado Pago 💳"}
         </button>
 
         {/* PAGO SIMULADO */}
         <button
           onClick={handleFakePayment}
-          disabled={cart.length === 0 || processing}
+          disabled={
+            cart.length === 0 || processing
+          }
           className="fake-payment-btn"
         >
           {processing

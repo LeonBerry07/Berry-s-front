@@ -18,6 +18,7 @@ import Success from "./components/Success/Success";
 import Orders from "./components/Orders/Orders";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Register from "./components/Register/Register";
+import Admin from "./components/Admin/Admin";
 
 import { useCart } from "./components/CartContext/CartContext";
 
@@ -68,6 +69,11 @@ function App() {
                 <Orders />
               </ProtectedRoute>
             }
+          />
+
+          <Route
+            path="/admin"
+            element={<Admin />}
           />
 
           <Route path="/register" element={<Register />} />

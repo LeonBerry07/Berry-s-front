@@ -6,14 +6,20 @@ import { AuthContext } from "../Context/AuthContext";
 import { useCart } from "../CartContext/CartContext";
 
 function NavBar() {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout } =
+    useContext(AuthContext);
+
   const { cart } = useCart();
 
   function handleLogout() {
-    const savedUser = JSON.parse(localStorage.getItem("user"));
+    const savedUser = JSON.parse(
+      localStorage.getItem("user")
+    );
 
     if (savedUser) {
-      localStorage.removeItem(`cart_${savedUser.email}`);
+      localStorage.removeItem(
+        `cart_${savedUser.email}`
+      );
     }
 
     logout();
@@ -23,52 +29,78 @@ function NavBar() {
 
   return (
     <nav className="navbar">
-
       <div>
-        <Link to="/" className="navbar-logo">
+        <Link
+          to="/"
+          className="navbar-logo"
+        >
           Berry's Music
         </Link>
       </div>
 
       <ul className="navbar-links">
-
         <li>
-          <Link to="/">Inicio</Link>
+          <Link to="/">
+            Inicio
+          </Link>
         </li>
 
         <li>
-          <Link to="/catalogue">Catalogue</Link>
+          <Link to="/catalogue">
+            Catalogue
+          </Link>
         </li>
 
         <li>
-          <Link to="/cart">Cart 🛒 ({cart?.length || 0})</Link>
+          <Link to="/cart">
+            Cart 🛒 (
+            {cart?.length || 0})
+          </Link>
         </li>
 
         <li>
-          <Link to="/orders">Orders 📦</Link>
+          <Link to="/orders">
+            Orders 📦
+          </Link>
+        </li>
+
+        {/* ADMIN PANEL */}
+        <li>
+          <Link to="/admin">
+            Admin 🎛️
+          </Link>
         </li>
 
         {user ? (
           <>
             <li>
-              <span style={{ color: "white" }}>
+              <span
+                style={{
+                  color: "white",
+                }}
+              >
                 👋 {user.name}
               </span>
             </li>
 
             <li>
-              <button onClick={handleLogout}>
+              <button
+                onClick={
+                  handleLogout
+                }
+              >
                 Logout 🚪
               </button>
             </li>
           </>
         ) : (
           <li>
-            <Link to="/login">Login</Link>
+            <Link to="/login">
+              Login
+            </Link>
           </li>
         )}
       </ul>
-
     </nav>
   );
 }
