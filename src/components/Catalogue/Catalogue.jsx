@@ -1,29 +1,65 @@
 import "./Catalogue.css";
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
+
 import BeatCard from "../BeatCard/BeatCard";
 
 export default function Catalogue() {
-  const [beats, setBeats] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [loading, setLoading] = useState(true);
+  const [beats, setBeats] =
+    useState([]);
+
+  const [
+    selectedCategory,
+    setSelectedCategory,
+  ] = useState("all");
+
+  const [loading, setLoading] =
+    useState(true);
+
+  // =========================
+  // FETCH BEATS
+  // =========================
 
   useEffect(() => {
     async function fetchBeats() {
       try {
         setLoading(true);
 
-        let url = "http://localhost:3001/api/beats";
+        let url =
+          "http://localhost:3001/api/beats";
 
-        if (selectedCategory !== "all") {
+        if (
+          selectedCategory !==
+          "all"
+        ) {
           url += `?category=${selectedCategory}`;
         }
 
-        const response = await fetch(url);
-        const data = await response.json();
+        const response =
+          await fetch(url);
 
-        setBeats(data);
+        const data =
+          await response.json();
+
+        // asegurar image fallback
+
+        const formattedBeats =
+          data.map((beat) => ({
+            ...beat,
+
+            image:
+              beat.image ||
+              "/beats/images/default.jpg",
+          }));
+
+        setBeats(formattedBeats);
       } catch (error) {
-        console.error("Error loading beats:", error);
+        console.error(
+          "Error loading beats:",
+          error
+        );
       } finally {
         setLoading(false);
       }
@@ -34,49 +70,95 @@ export default function Catalogue() {
 
   return (
     <div className="catalogue">
-      {/* FILTROS */}
+      {/* ========================= */}
+      {/* FILTERS */}
+      {/* ========================= */}
+
       <section className="featured">
         <div className="catalog-nav">
           <button
-            onClick={() => setSelectedCategory("new")}
+            onClick={() =>
+              setSelectedCategory(
+                "new"
+              )
+            }
             className={`category-btn new ${
-              selectedCategory === "new" ? "active" : ""
+              selectedCategory ===
+              "new"
+                ? "active"
+                : ""
             }`}
           >
-            <span>New Beats</span>
+            <span>
+              New Beats
+            </span>
           </button>
 
           <button
-            onClick={() => setSelectedCategory("top")}
+            onClick={() =>
+              setSelectedCategory(
+                "top"
+              )
+            }
             className={`category-btn top ${
-              selectedCategory === "top" ? "active" : ""
+              selectedCategory ===
+              "top"
+                ? "active"
+                : ""
             }`}
           >
-            <span>Top Beats</span>
+            <span>
+              Top Beats
+            </span>
           </button>
 
           <button
-            onClick={() => setSelectedCategory("lofi")}
+            onClick={() =>
+              setSelectedCategory(
+                "lofi"
+              )
+            }
             className={`category-btn lofi ${
-              selectedCategory === "lofi" ? "active" : ""
+              selectedCategory ===
+              "lofi"
+                ? "active"
+                : ""
             }`}
           >
-            <span>Lo-Fi</span>
+            <span>
+              Lo-Fi
+            </span>
           </button>
 
           <button
-            onClick={() => setSelectedCategory("ambient")}
+            onClick={() =>
+              setSelectedCategory(
+                "ambient"
+              )
+            }
             className={`category-btn ambient ${
-              selectedCategory === "ambient" ? "active" : ""
+              selectedCategory ===
+              "ambient"
+                ? "active"
+                : ""
             }`}
           >
-            <span>Ambient</span>
+            <span>
+              Ambient
+            </span>
           </button>
 
           <button
-            onClick={() => setSelectedCategory("all")}
+            onClick={() =>
+              setSelectedCategory(
+                "all"
+              )
+            }
             className={`category-btn all ${
-              selectedCategory === "all" ? "active" : ""
+              selectedCategory ===
+              "all"
+                ? "active"
+                : ""
             }`}
           >
             <span>All</span>
@@ -84,10 +166,19 @@ export default function Catalogue() {
         </div>
       </section>
 
-      {/* CATÁLOGO */}
+      {/* ========================= */}
+      {/* CATALOGUE */}
+      {/* ========================= */}
+
       <section className="featured">
         {loading ? (
-          <p>Cargando beats...</p>
+          <p>
+            Loading beats...
+          </p>
+        ) : beats.length === 0 ? (
+          <p>
+            No beats found.
+          </p>
         ) : (
           <div className="beat-grid">
             {beats.map((beat) => (

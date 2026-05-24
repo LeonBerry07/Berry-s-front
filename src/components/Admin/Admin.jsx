@@ -4,24 +4,39 @@ import { useEffect, useState } from "react";
 export default function Admin() {
   const [beats, setBeats] = useState([]);
 
-  const [title, setTitle] = useState("");
-  const [producer, setProducer] = useState("");
-  const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("");
-  const [audioFile, setAudioFile] = useState(null);
+  const [title, setTitle] =
+    useState("");
 
-  const [loading, setLoading] = useState(true);
+  const [producer, setProducer] =
+    useState("");
+
+  const [price, setPrice] =
+    useState("");
+
+  const [category, setCategory] =
+    useState("");
+
+  const [audioFile, setAudioFile] =
+    useState(null);
+
+  const [imageFile, setImageFile] =
+    useState(null);
+
+  const [loading, setLoading] =
+    useState(true);
 
   // =========================
   // CARGAR BEATS
   // =========================
+
   async function fetchBeats() {
     try {
       const response = await fetch(
         "http://localhost:3001/api/beats"
       );
 
-      const data = await response.json();
+      const data =
+        await response.json();
 
       setBeats(data);
     } catch (error) {
@@ -41,126 +56,186 @@ export default function Admin() {
   // =========================
   // CREAR BEAT
   // =========================
-  async function handleCreateBeat(e) {
-  e.preventDefault();
 
-  if (
-    !title ||
-    !producer ||
-    !price ||
-    !category ||
-    !audioFile
+  async function handleCreateBeat(
+    e
   ) {
-    alert("Complete all fields.");
-    return;
-  }
+    e.preventDefault();
 
-  try {
-    // =========================
-    // 1. SUBIR MP3
-    // =========================
-
-    const formData = new FormData();
-
-    formData.append(
-      "audio",
-      audioFile
-    );
-
-    const uploadResponse =
-      await fetch(
-        "http://localhost:3001/api/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-    const uploadData =
-      await uploadResponse.json();
-
-    if (!uploadResponse.ok) {
+    if (
+      !title ||
+      !producer ||
+      !price ||
+      !category ||
+      !audioFile ||
+      !imageFile
+    ) {
       alert(
-        uploadData.message ||
-          "Upload error"
+        "Complete all fields."
       );
 
       return;
     }
 
-    // =========================
-    // 2. CREAR BEAT
-    // =========================
+    try {
+      // =========================
+      // 1. SUBIR MP3
+      // =========================
 
-    const response = await fetch(
-      "http://localhost:3001/api/beats",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
+      const formData =
+        new FormData();
 
-        body: JSON.stringify({
-          title,
-          producer,
-          price,
-          category,
-          preview: uploadData.path || "",
-        }),
+      formData.append(
+        "audio",
+        audioFile
+      );
+
+      const uploadResponse =
+        await fetch(
+          "http://localhost:3001/api/upload",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+      const uploadData =
+        await uploadResponse.json();
+
+      if (!uploadResponse.ok) {
+        alert(
+          uploadData.message ||
+            "Upload error"
+        );
+
+        return;
       }
-    );
 
-    const data =
-      await response.json();
+      // =========================
+      // 2. SUBIR IMAGEN
+      // =========================
 
-    if (!response.ok) {
-      alert(
-        data.message ||
-          "Error creating beat"
+      const imageFormData =
+        new FormData();
+
+      imageFormData.append(
+        "image",
+        imageFile
       );
 
-      return;
+      const imageUploadResponse =
+        await fetch(
+          "http://localhost:3001/api/upload-image",
+          {
+            method: "POST",
+            body: imageFormData,
+          }
+        );
+
+      const imageUploadData =
+        await imageUploadResponse.json();
+
+      if (
+        !imageUploadResponse.ok
+      ) {
+        alert(
+          imageUploadData.message ||
+            "Image upload error"
+        );
+
+        return;
+      }
+
+      // =========================
+      // 3. CREAR BEAT
+      // =========================
+
+      const response =
+        await fetch(
+          "http://localhost:3001/api/beats",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+
+            body: JSON.stringify({
+              title,
+              producer,
+              price,
+              category,
+
+              preview:
+                uploadData.path ||
+                "",
+
+              image:
+                imageUploadData.path ||
+                "",
+            }),
+          }
+        );
+
+      const data =
+        await response.json();
+
+      if (!response.ok) {
+        alert(
+          data.message ||
+            "Error creating beat"
+        );
+
+        return;
+      }
+
+      alert("Beat uploaded 🎵");
+
+      // limpiar form
+
+      setTitle("");
+      setProducer("");
+      setPrice("");
+      setCategory("");
+
+      setAudioFile(null);
+      setImageFile(null);
+
+      // refrescar beats
+
+      fetchBeats();
+    } catch (error) {
+      console.error(
+        "Create beat error:",
+        error
+      );
     }
-
-    alert("Beat uploaded 🎵");
-
-    // limpiar form
-    setTitle("");
-    setProducer("");
-    setPrice("");
-    setCategory("");
-    setAudioFile(null);
-
-    // refrescar
-    fetchBeats();
-  } catch (error) {
-    console.error(
-      "Create beat error:",
-      error
-    );
   }
-}
 
   // =========================
   // DELETE
   // =========================
+
   async function handleDelete(id) {
-    const confirmDelete = window.confirm(
-      "Delete this beat?"
-    );
+    const confirmDelete =
+      window.confirm(
+        "Delete this beat?"
+      );
 
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/beats/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response =
+        await fetch(
+          `http://localhost:3001/api/beats/${id}`,
+          {
+            method: "DELETE",
+          }
+        );
 
-      const data = await response.json();
+      const data =
+        await response.json();
 
       if (!response.ok) {
         alert(
@@ -173,7 +248,8 @@ export default function Admin() {
 
       setBeats((prev) =>
         prev.filter(
-          (beat) => beat.id !== id
+          (beat) =>
+            beat.id !== id
         )
       );
     } catch (error) {
@@ -186,7 +262,9 @@ export default function Admin() {
 
   return (
     <div className="admin-container">
-      <h1>🎛️ Admin Panel</h1>
+      <h1>
+        🎛️ Admin Panel
+      </h1>
 
       {/* ========================= */}
       {/* CREATE FORM */}
@@ -194,14 +272,18 @@ export default function Admin() {
 
       <form
         className="admin-form"
-        onSubmit={handleCreateBeat}
+        onSubmit={
+          handleCreateBeat
+        }
       >
         <input
           type="text"
           placeholder="Beat title"
           value={title}
           onChange={(e) =>
-            setTitle(e.target.value)
+            setTitle(
+              e.target.value
+            )
           }
         />
 
@@ -210,7 +292,9 @@ export default function Admin() {
           placeholder="Producer"
           value={producer}
           onChange={(e) =>
-            setProducer(e.target.value)
+            setProducer(
+              e.target.value
+            )
           }
         />
 
@@ -219,7 +303,9 @@ export default function Admin() {
           placeholder="Price"
           value={price}
           onChange={(e) =>
-            setPrice(e.target.value)
+            setPrice(
+              e.target.value
+            )
           }
         />
 
@@ -228,15 +314,33 @@ export default function Admin() {
           placeholder="Category"
           value={category}
           onChange={(e) =>
-            setCategory(e.target.value)
+            setCategory(
+              e.target.value
+            )
           }
         />
+
+        {/* AUDIO */}
 
         <input
           type="file"
           accept=".mp3,audio/*"
           onChange={(e) =>
-            setAudioFile(e.target.files[0])
+            setAudioFile(
+              e.target.files[0]
+            )
+          }
+        />
+
+        {/* IMAGE */}
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) =>
+            setImageFile(
+              e.target.files[0]
+            )
           }
         />
 
@@ -251,9 +355,13 @@ export default function Admin() {
 
       <div className="admin-list">
         {loading ? (
-          <p>Loading beats...</p>
+          <p>
+            Loading beats...
+          </p>
         ) : beats.length === 0 ? (
-          <p>No beats found.</p>
+          <p>
+            No beats found.
+          </p>
         ) : (
           beats.map((beat) => (
             <div
@@ -261,29 +369,63 @@ export default function Admin() {
               className="admin-beat-card"
             >
               <div>
-                <h3>{beat.title}</h3>
+                {/* IMAGE */}
+
+                {beat.image && (
+                  <img
+                    src={`http://localhost:3001${beat.image}`}
+                    alt={
+                      beat.title
+                    }
+                    style={{
+                      width: "140px",
+                      height:
+                        "140px",
+
+                      objectFit:
+                        "cover",
+
+                      borderRadius:
+                        "14px",
+
+                      marginBottom:
+                        "15px",
+                    }}
+                  />
+                )}
+
+                <h3>
+                  {beat.title}
+                </h3>
 
                 <p>
                   Producer:{" "}
-                  {beat.producer}
+                  {
+                    beat.producer
+                  }
                 </p>
 
                 <p>
                   Category:{" "}
-                  {beat.category}
+                  {
+                    beat.category
+                  }
                 </p>
 
                 <p>
                   Price: $
                   {Number(
-                    beat.price || 0
+                    beat.price ||
+                      0
                   ).toFixed(2)}
                 </p>
               </div>
 
               <button
                 onClick={() =>
-                  handleDelete(beat.id)
+                  handleDelete(
+                    beat.id
+                  )
                 }
                 className="delete-btn"
               >
