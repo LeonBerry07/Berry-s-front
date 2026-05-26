@@ -27,111 +27,130 @@ import Register from "./components/Register/Register";
 
 import Admin from "./components/Admin/Admin";
 
-// NEW
 import BeatDetails from "./components/BeatDetails/BeatDetails";
+
+import Favorites from "./components/Favorites/Favorites";
 
 import { useCart } from "./components/CartContext/CartContext";
 
 function App() {
-  // GLOBAL CART
   const { cart } = useCart();
 
   return (
     <div className="App">
       {/* NAVBAR */}
+
       <NavBar cart={cart} />
 
-      <header></header>
+      {/* ROUTES */}
 
-      <div>
-        <Routes>
-          {/* HOME */}
-          <Route
-            path="/"
-            element={<Home />}
-          />
+      <Routes>
+        {/* HOME */}
 
-          {/* LOGIN */}
-          <Route
-            path="/login"
-            element={<Login />}
-          />
+        <Route
+          path="/"
+          element={<Home />}
+        />
 
-          {/* REGISTER */}
-          <Route
-            path="/register"
-            element={<Register />}
-          />
+        {/* LOGIN */}
 
-          {/* CATALOGUE */}
-          <Route
-            path="/catalogue"
-            element={
-              <Catalogue />
-            }
-          />
+        <Route
+          path="/login"
+          element={<Login />}
+        />
 
-          {/* BEAT DETAILS */}
-          <Route
-            path="/beat/:id"
-            element={
-              <BeatDetails />
-            }
-          />
+        {/* REGISTER */}
 
-          {/* CART */}
-          <Route
-            path="/cart"
-            element={
-              <ProtectedRoute>
-                <Cart />
-              </ProtectedRoute>
-            }
-          />
+        <Route
+          path="/register"
+          element={<Register />}
+        />
 
-          {/* CHECKOUT */}
-          <Route
-            path="/checkout"
-            element={
-              <ProtectedRoute>
-                <Checkout />
-              </ProtectedRoute>
-            }
-          />
+        {/* CATALOGUE */}
 
-          {/* SUCCESS */}
-          <Route
-            path="/success"
-            element={
-              <Success />
-            }
-          />
+        <Route
+          path="/catalogue"
+          element={
+            <Catalogue />
+          }
+        />
 
-          {/* ORDERS */}
-          <Route
-            path="/orders"
-            element={
-              <ProtectedRoute>
-                <Orders />
-              </ProtectedRoute>
-            }
-          />
+        {/* BEAT DETAILS */}
 
-          {/* ADMIN */}
-          <Route
-            path="/admin"
-            element={<Admin />}
-          />
-        </Routes>
-      </div>
+        <Route
+          path="/beat/:id"
+          element={
+            <BeatDetails />
+          }
+        />
+
+        {/* FAVORITES */}
+
+        <Route
+          path="/favorites"
+          element={
+            <ProtectedRoute>
+              <Favorites />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* CART */}
+
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute>
+              <Cart />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* CHECKOUT */}
+
+        <Route
+          path="/checkout"
+          element={
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* SUCCESS */}
+
+        <Route
+          path="/success"
+          element={
+            <Success />
+          }
+        />
+
+        {/* ORDERS */}
+
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute>
+              <Orders />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ADMIN */}
+
+        <Route
+          path="/admin"
+          element={<Admin />}
+        />
+      </Routes>
 
       {/* FOOTER */}
 
       <footer>
         <p>
-          &copy; 2026
-          Berry's - All rights
-          reserved
+          &copy; 2026 Berry's -
+          All rights reserved
         </p>
       </footer>
     </div>

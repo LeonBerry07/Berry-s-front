@@ -7,45 +7,94 @@ import {
 
 const CartContext = createContext();
 
-export function CartProvider({ children }) {
-  const [cart, setCart] = useState([]);
+export function CartProvider({
+  children,
+}) {
+  // =========================
+  // CART
+  // =========================
 
-  // Cargar el carrito del usuario actual
+  const [cart, setCart] =
+    useState([]);
+
+  // =========================
+  // FAVORITES
+  // =========================
+
+  const [favorites, setFavorites] =
+    useState([]);
+
+  // =========================
+  // LOAD USER DATA
+  // =========================
+
   function loadUserCart() {
     const user = JSON.parse(
       localStorage.getItem("user")
     );
 
-    // Si no hay usuario logueado, carrito vacío
+    // NO USER
+
     if (!user) {
       setCart([]);
+      setFavorites([]);
       return;
     }
 
-    // Cada usuario tiene su propio carrito
-    const savedCart = localStorage.getItem(
-      `cart_${user.email}`
-    );
+    // =========================
+    // CART
+    // =========================
+
+    const savedCart =
+      localStorage.getItem(
+        `cart_${user.email}`
+      );
 
     if (savedCart) {
-      setCart(JSON.parse(savedCart));
+      setCart(
+        JSON.parse(savedCart)
+      );
     } else {
       setCart([]);
     }
+
+    // =========================
+    // FAVORITES
+    // =========================
+
+    const savedFavorites =
+      localStorage.getItem(
+        `favorites_${user.email}`
+      );
+
+    if (savedFavorites) {
+      setFavorites(
+        JSON.parse(
+          savedFavorites
+        )
+      );
+    } else {
+      setFavorites([]);
+    }
   }
 
-  // Cargar carrito al iniciar la aplicación
+  // =========================
+  // INITIAL LOAD
+  // =========================
+
   useEffect(() => {
     loadUserCart();
   }, []);
 
-  // Guardar carrito automáticamente cuando cambia
+  // =========================
+  // SAVE CART
+  // =========================
+
   useEffect(() => {
     const user = JSON.parse(
       localStorage.getItem("user")
     );
 
-    // Si no hay usuario, no guardar nada
     if (!user) return;
 
     localStorage.setItem(
@@ -54,11 +103,32 @@ export function CartProvider({ children }) {
     );
   }, [cart]);
 
-  // Agregar beat al carrito
+  // =========================
+  // SAVE FAVORITES
+  // =========================
+
+  useEffect(() => {
+    const user = JSON.parse(
+      localStorage.getItem("user")
+    );
+
+    if (!user) return;
+
+    localStorage.setItem(
+      `favorites_${user.email}`,
+      JSON.stringify(favorites)
+    );
+  }, [favorites]);
+
+  // =========================
+  // CART FUNCTIONS
+  // =========================
+
   function addToCart(beat) {
     setCart((prev) => {
       const exists = prev.some(
-        (item) => item.id === beat.id
+        (item) =>
+          item.id === beat.id
       );
 
       if (exists) return prev;
@@ -67,26 +137,93 @@ export function CartProvider({ children }) {
     });
   }
 
-  // Eliminar beat del carrito
   function removeFromCart(id) {
     setCart((prev) =>
-      prev.filter((item) => item.id !== id)
+      prev.filter(
+        (item) =>
+          item.id !== id
+      )
     );
   }
 
-  // Vaciar carrito
   function clearCart() {
     setCart([]);
   }
 
+  // =========================
+  // FAVORITES FUNCTIONS
+  // =========================
+
+  function addToFavorites(beat) {
+    setFavorites((prev) => {
+      const exists = prev.some(
+        (item) =>
+          item.id === beat.id
+      );
+
+      if (exists) return prev;
+
+      return [...prev, beat];
+    });
+  }
+
+  function removeFromFavorites(
+    id
+  ) {
+    setFavorites((prev) =>
+      prev.filter(
+        (item) =>
+          item.id !== id
+      )
+    );
+  }
+
+  function toggleFavorite(beat) {
+    const exists =
+      favorites.some(
+        (item) =>
+          item.id === beat.id
+      );
+
+    if (exists) {
+      removeFromFavorites(
+        beat.id
+      );
+    } else {
+      addToFavorites(beat);
+    }
+  }
+
+  function clearFavorites() {
+    setFavorites([]);
+  }
+
+  // =========================
+  // PROVIDER
+  // =========================
+
   return (
     <CartContext.Provider
       value={{
+        // CART
+
         cart,
         setCart,
         addToCart,
         removeFromCart,
         clearCart,
+
+        // FAVORITES
+
+        favorites,
+        setFavorites,
+        addToFavorites,
+        removeFromFavorites,
+        toggleFavorite,
+        clearFavorites,
+
+        // LOAD
+
         loadUserCart,
       }}
     >
@@ -96,5 +233,7 @@ export function CartProvider({ children }) {
 }
 
 export function useCart() {
-  return useContext(CartContext);
+  return useContext(
+    CartContext
+  );
 }

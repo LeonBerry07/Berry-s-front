@@ -1,20 +1,37 @@
 import "./NavBar.css";
-import React from "react";
+
+import React, {
+  useContext,
+} from "react";
+
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+
 import { AuthContext } from "../Context/AuthContext";
+
 import { useCart } from "../CartContext/CartContext";
 
 function NavBar() {
-  const { user, logout } =
-    useContext(AuthContext);
+  const {
+    user,
+    logout,
+  } = useContext(AuthContext);
 
-  const { cart } = useCart();
+  const {
+    cart,
+    favorites,
+  } = useCart();
+
+  // =========================
+  // LOGOUT
+  // =========================
 
   function handleLogout() {
-    const savedUser = JSON.parse(
-      localStorage.getItem("user")
-    );
+    const savedUser =
+      JSON.parse(
+        localStorage.getItem(
+          "user"
+        )
+      );
 
     if (savedUser) {
       localStorage.removeItem(
@@ -27,8 +44,14 @@ function NavBar() {
     window.location.href = "/";
   }
 
+  // =========================
+  // UI
+  // =========================
+
   return (
     <nav className="navbar">
+      {/* LOGO */}
+
       <div>
         <Link
           to="/"
@@ -38,10 +61,12 @@ function NavBar() {
         </Link>
       </div>
 
+      {/* LINKS */}
+
       <ul className="navbar-links">
         <li>
           <Link to="/">
-            Inicio
+            Home
           </Link>
         </li>
 
@@ -51,12 +76,28 @@ function NavBar() {
           </Link>
         </li>
 
+        {/* FAVORITES */}
+
+        <li>
+          <Link to="/favorites">
+            Favorites ❤️ (
+            {favorites?.length ||
+              0}
+            )
+          </Link>
+        </li>
+
+        {/* CART */}
+
         <li>
           <Link to="/cart">
             Cart 🛒 (
-            {cart?.length || 0})
+            {cart?.length || 0}
+            )
           </Link>
         </li>
+
+        {/* ORDERS */}
 
         <li>
           <Link to="/orders">
@@ -64,22 +105,27 @@ function NavBar() {
           </Link>
         </li>
 
-        {/* ADMIN PANEL */}
+        {/* ADMIN */}
+
         <li>
           <Link to="/admin">
             Admin 🎛️
           </Link>
         </li>
 
+        {/* USER */}
+
         {user ? (
           <>
             <li>
               <span
                 style={{
-                  color: "white",
+                  color:
+                    "white",
                 }}
               >
-                👋 {user.name}
+                👋{" "}
+                {user.name}
               </span>
             </li>
 

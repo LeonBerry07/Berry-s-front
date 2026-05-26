@@ -15,10 +15,23 @@ export default function BeatCard({
     cart,
     addToCart,
     removeFromCart,
+
+    favorites,
+    toggleFavorite,
   } = useCart();
+
+  // =========================
+  // STATES
+  // =========================
 
   const isInCart =
     cart.some(
+      (item) =>
+        item.id === beat.id
+    );
+
+  const isFavorite =
+    favorites.some(
       (item) =>
         item.id === beat.id
     );
@@ -39,7 +52,7 @@ export default function BeatCard({
     )
       return;
 
-    // pause all other audios
+    // STOP OTHER AUDIOS
 
     document
       .querySelectorAll(
@@ -78,6 +91,16 @@ export default function BeatCard({
     }
   }
 
+  // =========================
+  // FAVORITE
+  // =========================
+
+  function handleFavorite(e) {
+    e.preventDefault();
+
+    toggleFavorite(beat);
+  }
+
   return (
     <Link
       to={`/beat/${beat.id}`}
@@ -94,6 +117,21 @@ export default function BeatCard({
             alt={beat.title}
             className="beat-image"
           />
+
+          {/* FAVORITE */}
+
+          <button
+            className={`favorite-btn ${
+              isFavorite
+                ? "active"
+                : ""
+            }`}
+            onClick={
+              handleFavorite
+            }
+          >
+            ♥
+          </button>
 
           {/* OVERLAY */}
 

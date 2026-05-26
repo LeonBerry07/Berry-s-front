@@ -25,6 +25,19 @@ export default function BeatDetails() {
   const [loading, setLoading] =
     useState(true);
 
+  // =========================
+  // PLAYER STATES
+  // =========================
+
+  const [isPlaying, setIsPlaying] =
+    useState(false);
+
+  const [currentTime, setCurrentTime] =
+    useState(0);
+
+  const [duration, setDuration] =
+    useState(0);
+
   const audioRef = useRef(null);
 
   const {
@@ -42,9 +55,7 @@ export default function BeatDetails() {
       try {
         setLoading(true);
 
-        // =========================
         // CURRENT BEAT
-        // =========================
 
         const response =
           await fetch(
@@ -56,9 +67,7 @@ export default function BeatDetails() {
 
         setBeat(data);
 
-        // =========================
         // RELATED
-        // =========================
 
         const relatedResponse =
           await fetch(
@@ -90,6 +99,126 @@ export default function BeatDetails() {
   }, [id]);
 
   // =========================
+  // AUDIO EVENTS
+  // =========================
+
+  useEffect(() => {
+    const audio =
+      audioRef.current;
+
+    if (!audio) return;
+
+    let animationFrame;
+
+    const whilePlaying = () => {
+      setCurrentTime(
+        audio.currentTime
+      );
+
+      animationFrame =
+        requestAnimationFrame(
+          whilePlaying
+        );
+    };
+
+    const loadedMetadata = () => {
+      setDuration(
+        audio.duration || 0
+      );
+    };
+
+    const handlePlay = () => {
+      animationFrame =
+        requestAnimationFrame(
+          whilePlaying
+        );
+    };
+
+    const handlePause = () => {
+      cancelAnimationFrame(
+        animationFrame
+      );
+    };
+
+    const handleEnded = () => {
+      setIsPlaying(false);
+
+      setCurrentTime(0);
+
+      cancelAnimationFrame(
+        animationFrame
+      );
+    };
+
+    audio.addEventListener(
+      "loadedmetadata",
+      loadedMetadata
+    );
+
+    audio.addEventListener(
+      "play",
+      handlePlay
+    );
+
+    audio.addEventListener(
+      "pause",
+      handlePause
+    );
+
+    audio.addEventListener(
+      "ended",
+      handleEnded
+    );
+
+    return () => {
+      audio.removeEventListener(
+        "loadedmetadata",
+        loadedMetadata
+      );
+
+      audio.removeEventListener(
+        "play",
+        handlePlay
+      );
+
+      audio.removeEventListener(
+        "pause",
+        handlePause
+      );
+
+      audio.removeEventListener(
+        "ended",
+        handleEnded
+      );
+
+      cancelAnimationFrame(
+        animationFrame
+      );
+    };
+  }, [beat?.preview]);
+
+  // =========================
+  // FORMAT TIME
+  // =========================
+
+  function formatTime(time) {
+    if (!time) return "0:00";
+
+    const minutes =
+      Math.floor(time / 60);
+
+    const seconds = Math.floor(
+      time % 60
+    );
+
+    return `${minutes}:${
+      seconds < 10
+        ? "0" + seconds
+        : seconds
+    }`;
+  }
+
+  // =========================
   // CART
   // =========================
 
@@ -112,22 +241,50 @@ export default function BeatDetails() {
   }
 
   // =========================
-  // AUDIO
+  // PLAY / PAUSE
   // =========================
 
-  function handlePreview() {
+  async function handlePreview() {
     const audio =
       audioRef.current;
 
     if (!audio) return;
 
-    if (audio.paused) {
-      audio.play();
-    } else {
-      audio.pause();
+    try {
+      if (audio.paused) {
+        await audio.play();
 
-      audio.currentTime = 0;
+        setIsPlaying(true);
+      } else {
+        audio.pause();
+
+        setIsPlaying(false);
+      }
+    } catch (error) {
+      console.error(
+        "Audio play error:",
+        error
+      );
     }
+  }
+
+  // =========================
+  // SEEK
+  // =========================
+
+  function handleSeek(e) {
+    const audio =
+      audioRef.current;
+
+    if (!audio) return;
+
+    const newTime =
+      Number(e.target.value);
+
+    audio.currentTime =
+      newTime;
+
+    setCurrentTime(newTime);
   }
 
   // =========================
@@ -203,18 +360,91 @@ export default function BeatDetails() {
             Berry's Music.
           </p>
 
+          {/* ========================= */}
+          {/* PLAYER */}
+          {/* ========================= */}
+
+          <div className="player-container">
+            {/* WAVEFORM */}
+
+            <div className="waveform">
+              {Array.from({
+                length: 60,
+              }).map((_, index) => {
+                const heights = [
+                  14, 20, 26, 18, 34,
+                  24, 40, 16, 30, 22,
+                ];
+
+                return (
+                  <span
+                    key={index}
+                    className={`wave-bar ${
+                      isPlaying
+                        ? "playing"
+                        : ""
+                    }`}
+                    style={{
+                      height: `${
+                        heights[
+                          index %
+                            heights.length
+                        ]
+                      }px`,
+                      animationDelay: `${index * 0.03}s`,
+                    }}
+                  />
+                );
+              })}
+            </div>
+
+            {/* CONTROLS */}
+
+            <div className="player-controls">
+              <button
+                className="play-btn"
+                onClick={
+                  handlePreview
+                }
+              >
+                {isPlaying
+                  ? "❚❚"
+                  : "▶"}
+              </button>
+
+              <div className="progress-container">
+                <span>
+                  {formatTime(
+                    currentTime
+                  )}
+                </span>
+
+                <input
+                  type="range"
+                  min="0"
+                  max={duration || 0}
+                  step="0.01"
+                  value={
+                    currentTime
+                  }
+                  onChange={
+                    handleSeek
+                  }
+                  className="progress-bar"
+                />
+
+                <span>
+                  {formatTime(
+                    duration
+                  )}
+                </span>
+              </div>
+            </div>
+          </div>
+
           {/* ACTIONS */}
 
           <div className="beat-actions">
-            <button
-              className="preview-btn-large"
-              onClick={
-                handlePreview
-              }
-            >
-              ▶ Preview
-            </button>
-
             <button
               className={`cart-btn-large ${
                 isInCart
@@ -235,6 +465,7 @@ export default function BeatDetails() {
 
           <audio
             ref={audioRef}
+            preload="metadata"
             src={`http://localhost:3001${beat.preview}`}
           />
         </div>
@@ -256,7 +487,9 @@ export default function BeatDetails() {
             </p>
           ) : (
             relatedBeats.map(
-              (relatedBeat) => (
+              (
+                relatedBeat
+              ) => (
                 <Link
                   key={
                     relatedBeat.id

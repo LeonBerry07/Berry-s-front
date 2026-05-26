@@ -1,75 +1,350 @@
+.beat-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
 .beat-card {
+  position: relative;
+
   background: rgba(255, 255, 255, 0.06);
+
   color: white;
-  border-radius: 16px;
-  padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+
+  border-radius: 22px;
+
+  overflow: hidden;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 10px 30px
+    rgba(0, 0, 0, 0.3);
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  backdrop-filter: blur(10px);
+
+  backdrop-filter: blur(12px);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border 0.3s ease;
 }
 
 .beat-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+  transform: translateY(-8px);
+
+  border:
+    1px solid
+    rgba(139, 92, 246, 0.45);
+
+  box-shadow:
+    0 16px 45px
+    rgba(139, 92, 246, 0.18);
 }
 
+/* ========================= */
+/* IMAGE */
+/* ========================= */
+
+.beat-image-container {
+  position: relative;
+
+  width: 100%;
+  height: 240px;
+
+  overflow: hidden;
+}
+
+.beat-image {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition:
+    transform 0.5s ease,
+    filter 0.3s ease;
+}
+
+.beat-card:hover .beat-image {
+  transform: scale(1.06);
+
+  filter: brightness(0.85);
+}
+
+/* ========================= */
+/* FAVORITE */
+/* ========================= */
+
+.favorite-btn {
+  position: absolute;
+
+  top: 14px;
+  right: 14px;
+
+  width: 42px;
+  height: 42px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background:
+    rgba(0, 0, 0, 0.45);
+
+  color:
+    rgba(255, 255, 255, 0.7);
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  z-index: 5;
+
+  backdrop-filter: blur(8px);
+
+  transition: 0.25s;
+}
+
+.favorite-btn:hover {
+  transform: scale(1.1);
+
+  background:
+    rgba(236, 72, 153, 0.18);
+
+  color: #ec4899;
+}
+
+.favorite-btn.active {
+  background:
+    rgba(236, 72, 153, 0.2);
+
+  color: #ec4899;
+
+  box-shadow:
+    0 0 18px
+    rgba(236, 72, 153, 0.45);
+
+  animation:
+    favoritePulse 1.8s infinite;
+}
+
+@keyframes favoritePulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ========================= */
+/* OVERLAY */
+/* ========================= */
+
+.beat-overlay {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.65),
+      rgba(0, 0, 0, 0.15)
+    );
+
+  opacity: 0;
+
+  transition: 0.3s;
+}
+
+.beat-card:hover .beat-overlay {
+  opacity: 1;
+}
+
+/* ========================= */
 /* INFO */
+/* ========================= */
+
+.beat-info {
+  padding:
+    18px 20px 8px;
+}
+
 .beat-info h3 {
   font-size: 1.2rem;
+
   margin-bottom: 6px;
+
   color: white;
+
+  font-weight: 700;
 }
 
 .beat-info p {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.92rem;
+
+  color:
+    rgba(255, 255, 255, 0.65);
+
+  margin-bottom: 12px;
 }
 
+.beat-category {
+  display: inline-block;
+
+  padding:
+    6px 12px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+
+  background:
+    rgba(139, 92, 246, 0.15);
+
+  color: #c4b5fd;
+
+  border:
+    1px solid
+    rgba(139, 92, 246, 0.25);
+}
+
+/* ========================= */
 /* FOOTER */
+/* ========================= */
+
 .beat-footer {
   display: flex;
+
   justify-content: space-between;
   align-items: center;
-  margin-top: 12px;
+
+  padding:
+    0 20px 20px;
 }
 
-/* PREVIEW (acción secundaria) */
+.beat-price {
+  font-size: 1.15rem;
+
+  font-weight: bold;
+
+  color: white;
+}
+
+/* ========================= */
+/* PREVIEW BUTTON */
+/* ========================= */
+
 .btn-preview {
-  background: transparent;
-  border: 1px solid #a78bfa;
-  color: #a78bfa;
-  padding: 6px 12px;
-  border-radius: 8px;
+  background:
+    rgba(255, 255, 255, 0.1);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.2);
+
+  color: white;
+
+  padding:
+    10px 18px;
+
+  border-radius: 12px;
+
   cursor: pointer;
-  transition: 0.2s;
+
+  font-weight: 600;
+
+  transition: 0.25s;
 }
 
 .btn-preview:hover {
-  background: #a78bfa;
-  color: black;
+  background:
+    linear-gradient(
+      135deg,
+      #8b5cf6,
+      #ec4899
+    );
+
+  border-color: transparent;
+
+  transform: scale(1.05);
 }
 
-/* CART (acción principal) */
+/* ========================= */
+/* CART BUTTON */
+/* ========================= */
+
 .btn-cart {
-  background: #6d28d9;
+  background:
+    linear-gradient(
+      135deg,
+      #6d28d9,
+      #8b5cf6
+    );
+
   color: white;
+
   border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
+
+  padding:
+    10px 14px;
+
+  border-radius: 12px;
+
   cursor: pointer;
-  transition: 0.2s;
+
+  font-weight: 600;
+
+  transition: 0.25s;
 }
 
 .btn-cart:hover {
-  background: #8b5cf6;
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 25px
+    rgba(139, 92, 246, 0.3);
 }
 
-/* disabled (lo mantenemos pero más limpio) */
-.btn-cart:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.btn-cart.added {
+  background:
+    linear-gradient(
+      135deg,
+      #10b981,
+      #34d399
+    );
+}
+
+/* ========================= */
+/* RESPONSIVE */
+/* ========================= */
+
+@media (max-width: 768px) {
+  .beat-image-container {
+    height: 220px;
+  }
+
+  .beat-footer {
+    flex-direction: column;
+    gap: 14px;
+
+    align-items: stretch;
+  }
+
+  .btn-cart {
+    width: 100%;
+  }
 }
