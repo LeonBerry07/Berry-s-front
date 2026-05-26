@@ -1,8 +1,12 @@
 import "./Admin.css";
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
 
 export default function Admin() {
-  const [beats, setBeats] = useState([]);
+  const [beats, setBeats] =
+    useState([]);
 
   const [title, setTitle] =
     useState("");
@@ -26,7 +30,14 @@ export default function Admin() {
     useState(true);
 
   // =========================
-  // CARGAR BEATS
+  // EDIT MODE
+  // =========================
+
+  const [editingBeatId, setEditingBeatId] =
+    useState(null);
+
+  // =========================
+  // FETCH BEATS
   // =========================
 
   async function fetchBeats() {
@@ -54,21 +65,33 @@ export default function Admin() {
   }, []);
 
   // =========================
-  // CREAR BEAT
+  // RESET FORM
   // =========================
 
-  async function handleCreateBeat(
-    e
-  ) {
+  function resetForm() {
+    setTitle("");
+    setProducer("");
+    setPrice("");
+    setCategory("");
+
+    setAudioFile(null);
+    setImageFile(null);
+
+    setEditingBeatId(null);
+  }
+
+  // =========================
+  // CREATE OR UPDATE
+  // =========================
+
+  async function handleSubmit(e) {
     e.preventDefault();
 
     if (
       !title ||
       !producer ||
       !price ||
-      !category ||
-      !audioFile ||
-      !imageFile
+      !category
     ) {
       alert(
         "Complete all fields."
@@ -78,139 +101,230 @@ export default function Admin() {
     }
 
     try {
+      let previewPath = "";
+      let imagePath = "";
+
       // =========================
-      // 1. SUBIR MP3
+      // AUDIO UPLOAD
       // =========================
 
-      const formData =
-        new FormData();
+      if (audioFile) {
+        const formData =
+          new FormData();
 
-      formData.append(
-        "audio",
-        audioFile
-      );
-
-      const uploadResponse =
-        await fetch(
-          "http://localhost:3001/api/upload",
-          {
-            method: "POST",
-            body: formData,
-          }
+        formData.append(
+          "audio",
+          audioFile
         );
 
-      const uploadData =
-        await uploadResponse.json();
+        const uploadResponse =
+          await fetch(
+            "http://localhost:3001/api/upload",
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
 
-      if (!uploadResponse.ok) {
-        alert(
-          uploadData.message ||
-            "Upload error"
-        );
+        const uploadData =
+          await uploadResponse.json();
 
-        return;
+        if (
+          !uploadResponse.ok
+        ) {
+          alert(
+            uploadData.message ||
+              "Upload error"
+          );
+
+          return;
+        }
+
+        previewPath =
+          uploadData.path;
       }
 
       // =========================
-      // 2. SUBIR IMAGEN
+      // IMAGE UPLOAD
       // =========================
 
-      const imageFormData =
-        new FormData();
+      if (imageFile) {
+        const imageFormData =
+          new FormData();
 
-      imageFormData.append(
-        "image",
-        imageFile
-      );
-
-      const imageUploadResponse =
-        await fetch(
-          "http://localhost:3001/api/upload-image",
-          {
-            method: "POST",
-            body: imageFormData,
-          }
+        imageFormData.append(
+          "image",
+          imageFile
         );
 
-      const imageUploadData =
-        await imageUploadResponse.json();
+        const imageUploadResponse =
+          await fetch(
+            "http://localhost:3001/api/upload-image",
+            {
+              method: "POST",
+              body: imageFormData,
+            }
+          );
 
-      if (
-        !imageUploadResponse.ok
-      ) {
-        alert(
-          imageUploadData.message ||
-            "Image upload error"
-        );
+        const imageUploadData =
+          await imageUploadResponse.json();
 
-        return;
+        if (
+          !imageUploadResponse.ok
+        ) {
+          alert(
+            imageUploadData.message ||
+              "Image upload error"
+          );
+
+          return;
+        }
+
+        imagePath =
+          imageUploadData.path;
       }
 
       // =========================
-      // 3. CREAR BEAT
+      // CREATE
       // =========================
 
-      const response =
-        await fetch(
-          "http://localhost:3001/api/beats",
-          {
-            method: "POST",
+      if (!editingBeatId) {
+        const response =
+          await fetch(
+            "http://localhost:3001/api/beats",
+            {
+              method: "POST",
 
-            headers: {
-              "Content-Type":
-                "application/json",
-            },
+              headers: {
+                "Content-Type":
+                  "application/json",
+              },
 
-            body: JSON.stringify({
-              title,
-              producer,
-              price,
-              category,
+              body: JSON.stringify({
+                title,
+                producer,
+                price,
+                category,
 
-              preview:
-                uploadData.path ||
-                "",
+                preview:
+                  previewPath,
 
-              image:
-                imageUploadData.path ||
-                "",
-            }),
-          }
-        );
+                image:
+                  imagePath,
+              }),
+            }
+          );
 
-      const data =
-        await response.json();
+        const data =
+          await response.json();
 
-      if (!response.ok) {
+        if (!response.ok) {
+          alert(
+            data.message ||
+              "Error creating beat"
+          );
+
+          return;
+        }
+
         alert(
-          data.message ||
-            "Error creating beat"
+          "Beat uploaded 🎵"
         );
-
-        return;
       }
 
-      alert("Beat uploaded 🎵");
+      // =========================
+      // UPDATE
+      // =========================
 
-      // limpiar form
+      else {
+        const currentBeat =
+          beats.find(
+            (beat) =>
+              beat.id ===
+              editingBeatId
+          );
 
-      setTitle("");
-      setProducer("");
-      setPrice("");
-      setCategory("");
+        const response =
+          await fetch(
+            `http://localhost:3001/api/beats/${editingBeatId}`,
+            {
+              method: "PUT",
 
-      setAudioFile(null);
-      setImageFile(null);
+              headers: {
+                "Content-Type":
+                  "application/json",
+              },
 
-      // refrescar beats
+              body: JSON.stringify({
+                title,
+                producer,
+                price,
+                category,
+
+                preview:
+                  previewPath ||
+                  currentBeat.preview,
+
+                image:
+                  imagePath ||
+                  currentBeat.image,
+              }),
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (!response.ok) {
+          alert(
+            data.message ||
+              "Error updating beat"
+          );
+
+          return;
+        }
+
+        alert(
+          "Beat updated ✨"
+        );
+      }
+
+      resetForm();
 
       fetchBeats();
     } catch (error) {
       console.error(
-        "Create beat error:",
+        "Submit beat error:",
         error
       );
     }
+  }
+
+  // =========================
+  // EDIT
+  // =========================
+
+  function handleEdit(beat) {
+    setEditingBeatId(
+      beat.id
+    );
+
+    setTitle(beat.title);
+
+    setProducer(
+      beat.producer
+    );
+
+    setPrice(beat.price);
+
+    setCategory(
+      beat.category
+    );
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }
 
   // =========================
@@ -267,13 +381,13 @@ export default function Admin() {
       </h1>
 
       {/* ========================= */}
-      {/* CREATE FORM */}
+      {/* FORM */}
       {/* ========================= */}
 
       <form
         className="admin-form"
         onSubmit={
-          handleCreateBeat
+          handleSubmit
         }
       >
         <input
@@ -344,9 +458,25 @@ export default function Admin() {
           }
         />
 
+        {/* BUTTONS */}
+
         <button type="submit">
-          Add Beat 🎵
+          {editingBeatId
+            ? "Update Beat ✨"
+            : "Add Beat 🎵"}
         </button>
+
+        {editingBeatId && (
+          <button
+            type="button"
+            onClick={
+              resetForm
+            }
+            className="cancel-btn"
+          >
+            Cancel Edit
+          </button>
+        )}
       </form>
 
       {/* ========================= */}
@@ -379,6 +509,7 @@ export default function Admin() {
                     }
                     style={{
                       width: "140px",
+
                       height:
                         "140px",
 
@@ -421,16 +552,41 @@ export default function Admin() {
                 </p>
               </div>
 
-              <button
-                onClick={() =>
-                  handleDelete(
-                    beat.id
-                  )
-                }
-                className="delete-btn"
+              {/* ACTIONS */}
+
+              <div
+                style={{
+                  display:
+                    "flex",
+
+                  flexDirection:
+                    "column",
+
+                  gap: "12px",
+                }}
               >
-                Delete ❌
-              </button>
+                <button
+                  onClick={() =>
+                    handleEdit(
+                      beat
+                    )
+                  }
+                  className="edit-btn"
+                >
+                  Edit ✏️
+                </button>
+
+                <button
+                  onClick={() =>
+                    handleDelete(
+                      beat.id
+                    )
+                  }
+                  className="delete-btn"
+                >
+                  Delete ❌
+                </button>
+              </div>
             </div>
           ))
         )}

@@ -1,47 +1,85 @@
-// App.js
-// Reemplazá TODO tu App.js por este archivo.
-// El problema es que tu App todavía estaba usando un estado local `cart`,
-// mientras que Checkout, Catalogue y BeatCard usan `CartContext`.
-// Eso hacía que el contador del NavBar y algunas páginas leyeran un carrito,
-// y otras páginas leyeran otro distinto.
-
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+
+import {
+  Routes,
+  Route,
+} from "react-router-dom";
 
 import NavBar from "./components/NavBar/NavBar";
+
 import Home from "./components/Home/Home";
+
 import Login from "./components/Login/Login";
+
 import Catalogue from "./components/Catalogue/Catalogue";
+
 import Cart from "./components/Cart/Cart";
+
 import Checkout from "./components/Checkout/Checkout";
+
 import Success from "./components/Success/Success";
+
 import Orders from "./components/Orders/Orders";
+
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+
 import Register from "./components/Register/Register";
+
 import Admin from "./components/Admin/Admin";
+
+// NEW
+import BeatDetails from "./components/BeatDetails/BeatDetails";
 
 import { useCart } from "./components/CartContext/CartContext";
 
 function App() {
-  // Usar UN SOLO carrito global desde Context
+  // GLOBAL CART
   const { cart } = useCart();
 
   return (
     <div className="App">
-      {/* NavBar usa el mismo carrito global */}
+      {/* NAVBAR */}
       <NavBar cart={cart} />
 
       <header></header>
 
       <div>
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* HOME */}
+          <Route
+            path="/"
+            element={<Home />}
+          />
 
-          <Route path="/login" element={<Login />} />
+          {/* LOGIN */}
+          <Route
+            path="/login"
+            element={<Login />}
+          />
 
-          {/* Ya no se pasan props cart/setCart */}
-          <Route path="/catalogue" element={<Catalogue />} />
+          {/* REGISTER */}
+          <Route
+            path="/register"
+            element={<Register />}
+          />
 
+          {/* CATALOGUE */}
+          <Route
+            path="/catalogue"
+            element={
+              <Catalogue />
+            }
+          />
+
+          {/* BEAT DETAILS */}
+          <Route
+            path="/beat/:id"
+            element={
+              <BeatDetails />
+            }
+          />
+
+          {/* CART */}
           <Route
             path="/cart"
             element={
@@ -51,6 +89,7 @@ function App() {
             }
           />
 
+          {/* CHECKOUT */}
           <Route
             path="/checkout"
             element={
@@ -60,8 +99,15 @@ function App() {
             }
           />
 
-          <Route path="/success" element={<Success />} />
+          {/* SUCCESS */}
+          <Route
+            path="/success"
+            element={
+              <Success />
+            }
+          />
 
+          {/* ORDERS */}
           <Route
             path="/orders"
             element={
@@ -71,17 +117,22 @@ function App() {
             }
           />
 
+          {/* ADMIN */}
           <Route
             path="/admin"
             element={<Admin />}
           />
-
-          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
 
+      {/* FOOTER */}
+
       <footer>
-        <p>&copy; 2026 Berry's - All rights reserved</p>
+        <p>
+          &copy; 2026
+          Berry's - All rights
+          reserved
+        </p>
       </footer>
     </div>
   );
