@@ -36,6 +36,11 @@ export default function Admin() {
   const [editingBeatId, setEditingBeatId] =
     useState(null);
 
+  const [orders, setOrders] =
+  useState([]);
+
+  const [activeTab, setActiveTab] =
+  useState("beats");
   // =========================
   // FETCH BEATS
   // =========================
@@ -61,8 +66,38 @@ export default function Admin() {
   }
 
   useEffect(() => {
-    fetchBeats();
+  fetchBeats();
+  fetchOrders();
   }, []);
+
+  async function fetchOrders() {
+  try {
+    const token =
+      localStorage.getItem(
+        "token"
+      );
+
+    const response =
+      await fetch(
+        "http://localhost:3001/api/orders/all",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+    const data =
+          await response.json();
+
+        setOrders(data);
+      } catch (error) {
+        console.error(
+          "Error loading orders:",
+          error
+        );
+      }
+    }
 
   // =========================
   // RESET FORM
@@ -380,24 +415,50 @@ export default function Admin() {
         🎛️ Admin Panel
       </h1>
 
+      <div className="admin-tabs">
+        <button
+          className={
+            activeTab === "beats"
+              ? "active-tab"
+              : ""
+          }
+          onClick={() =>
+            setActiveTab("beats")
+          }
+        >
+          🎵 Beats
+        </button>
+
+        <button
+          className={
+            activeTab === "orders"
+              ? "active-tab"
+              : ""
+          }
+          onClick={() =>
+            setActiveTab("orders")
+          }
+        >
+          📦 Orders
+        </button>
+      </div>
+{
+  activeTab === "beats" && (
+    <>
       {/* ========================= */}
       {/* FORM */}
       {/* ========================= */}
 
       <form
         className="admin-form"
-        onSubmit={
-          handleSubmit
-        }
+        onSubmit={handleSubmit}
       >
         <input
           type="text"
           placeholder="Beat title"
           value={title}
           onChange={(e) =>
-            setTitle(
-              e.target.value
-            )
+            setTitle(e.target.value)
           }
         />
 
@@ -406,9 +467,7 @@ export default function Admin() {
           placeholder="Producer"
           value={producer}
           onChange={(e) =>
-            setProducer(
-              e.target.value
-            )
+            setProducer(e.target.value)
           }
         />
 
@@ -417,9 +476,7 @@ export default function Admin() {
           placeholder="Price"
           value={price}
           onChange={(e) =>
-            setPrice(
-              e.target.value
-            )
+            setPrice(e.target.value)
           }
         />
 
@@ -428,13 +485,9 @@ export default function Admin() {
           placeholder="Category"
           value={category}
           onChange={(e) =>
-            setCategory(
-              e.target.value
-            )
+            setCategory(e.target.value)
           }
         />
-
-        {/* AUDIO */}
 
         <input
           type="file"
@@ -446,8 +499,6 @@ export default function Admin() {
           }
         />
 
-        {/* IMAGE */}
-
         <input
           type="file"
           accept="image/*"
@@ -458,8 +509,6 @@ export default function Admin() {
           }
         />
 
-        {/* BUTTONS */}
-
         <button type="submit">
           {editingBeatId
             ? "Update Beat ✨"
@@ -469,9 +518,7 @@ export default function Admin() {
         {editingBeatId && (
           <button
             type="button"
-            onClick={
-              resetForm
-            }
+            onClick={resetForm}
             className="cancel-btn"
           >
             Cancel Edit
@@ -485,13 +532,9 @@ export default function Admin() {
 
       <div className="admin-list">
         {loading ? (
-          <p>
-            Loading beats...
-          </p>
+          <p>Loading beats...</p>
         ) : beats.length === 0 ? (
-          <p>
-            No beats found.
-          </p>
+          <p>No beats found.</p>
         ) : (
           beats.map((beat) => (
             <div
@@ -499,77 +542,51 @@ export default function Admin() {
               className="admin-beat-card"
             >
               <div>
-                {/* IMAGE */}
-
                 {beat.image && (
                   <img
                     src={`http://localhost:3001${beat.image}`}
-                    alt={
-                      beat.title
-                    }
+                    alt={beat.title}
                     style={{
                       width: "140px",
-
-                      height:
-                        "140px",
-
-                      objectFit:
-                        "cover",
-
-                      borderRadius:
-                        "14px",
-
-                      marginBottom:
-                        "15px",
+                      height: "140px",
+                      objectFit: "cover",
+                      borderRadius: "14px",
+                      marginBottom: "15px",
                     }}
                   />
                 )}
 
-                <h3>
-                  {beat.title}
-                </h3>
+                <h3>{beat.title}</h3>
 
                 <p>
                   Producer:{" "}
-                  {
-                    beat.producer
-                  }
+                  {beat.producer}
                 </p>
 
                 <p>
                   Category:{" "}
-                  {
-                    beat.category
-                  }
+                  {beat.category}
                 </p>
 
                 <p>
                   Price: $
                   {Number(
-                    beat.price ||
-                      0
+                    beat.price || 0
                   ).toFixed(2)}
                 </p>
               </div>
 
-              {/* ACTIONS */}
-
               <div
                 style={{
-                  display:
-                    "flex",
-
+                  display: "flex",
                   flexDirection:
                     "column",
-
                   gap: "12px",
                 }}
               >
                 <button
                   onClick={() =>
-                    handleEdit(
-                      beat
-                    )
+                    handleEdit(beat)
                   }
                   className="edit-btn"
                 >
@@ -591,6 +608,76 @@ export default function Admin() {
           ))
         )}
       </div>
+    </>
+  )
+}
+
+{
+  activeTab === "orders" && (
+    <div className="admin-orders">
+      <h2>
+        📦 Customer Orders
+      </h2>
+
+      {orders.length === 0 ? (
+        <p>No orders found.</p>
+      ) : (
+        orders.map((order) => (
+          <div
+            key={order.id}
+            className="order-card"
+          >
+            <h3>
+              Order #{order.id}
+            </h3>
+
+            <p>
+              Customer:{" "}
+              {order.name}
+            </p>
+
+            <p>
+              Email:{" "}
+              {order.email}
+            </p>
+
+            <p>
+              Status:{" "}
+              {order.status}
+            </p>
+
+            <p>
+              Total: $
+              {Number(
+                order.total || 0
+              ).toFixed(2)}
+            </p>
+
+            <div>
+              <strong>
+                Beats:
+              </strong>
+
+              <ul>
+                {order.items?.map(
+                  (
+                    item,
+                    index
+                  ) => (
+                    <li key={index}>
+                      {item.title}
+                    </li>
+                  )
+                )}
+              </ul>
+            </div>
+          </div>
+        ))
+      )}
     </div>
-  );
+  )
+}
+
+</div>
+);
 }
