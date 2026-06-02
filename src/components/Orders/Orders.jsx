@@ -5,15 +5,14 @@ import { useNavigate } from "react-router-dom";
 export default function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
-  // Formatear fecha en formato argentino
   function formatDate(dateString) {
     if (!dateString) return "Unknown date";
 
     const date = new Date(dateString);
 
-    // Verificar que la fecha sea válida
     if (isNaN(date.getTime())) {
       return "Invalid date";
     }
@@ -30,38 +29,51 @@ export default function Orders() {
   useEffect(() => {
     async function fetchOrders() {
       try {
-        const token = localStorage.getItem("token");
+        const token =
+          localStorage.getItem("token");
 
-        // Si el usuario no está logueado, lo enviamos al login
         if (!token) {
           navigate("/login");
           return;
         }
 
-        const response = await fetch(
-          "http://localhost:3001/api/orders",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
+        const response =
+          await fetch(
+            "http://localhost:3001/api/orders",
+            {
+              method: "GET",
+
+              headers: {
+                "Content-Type":
+                  "application/json",
+
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+        const data =
+          await response.json();
+
+        console.log(
+          "Orders received:",
+          data
         );
-
-        const data = await response.json();
-
-        console.log("Orders received:", data);
 
         if (!response.ok) {
           console.error(
-            data.message || "Error loading orders"
+            data.message ||
+              "Error loading orders"
           );
+
           return;
         }
 
-        // Asegurarnos de que siempre sea un array
-        setOrders(Array.isArray(data) ? data : []);
+        setOrders(
+          Array.isArray(data)
+            ? data
+            : []
+        );
       } catch (error) {
         console.error(
           "Error loading orders:",
@@ -79,24 +91,97 @@ export default function Orders() {
     <div className="orders-container">
       <h2>📦 My Orders</h2>
 
+      {!loading &&
+        orders.length > 0 && (
+          <div className="orders-stats">
+            <div className="stat-card">
+              <h3>
+                {orders.length}
+              </h3>
+
+              <p>
+                Total Orders
+              </p>
+            </div>
+
+            <div className="stat-card">
+              <h3>
+                $
+                {orders
+                  .reduce(
+                    (
+                      sum,
+                      order
+                    ) =>
+                      sum +
+                      Number(
+                        order.total ||
+                          0
+                      ),
+                    0
+                  )
+                  .toFixed(2)}
+              </h3>
+
+              <p>
+                Total Spent
+              </p>
+            </div>
+
+            <div className="stat-card">
+              <h3>
+                {orders.reduce(
+                  (
+                    sum,
+                    order
+                  ) =>
+                    sum +
+                    (order.items
+                      ?.length ||
+                      0),
+                  0
+                )}
+              </h3>
+
+              <p>
+                Beats Purchased
+              </p>
+            </div>
+          </div>
+        )}
+
       {loading ? (
-        <p>Loading orders...</p>
+        <p>
+          Loading orders...
+        </p>
       ) : orders.length === 0 ? (
-        <p>You have no orders yet.</p>
+        <p>
+          You have no orders yet.
+        </p>
       ) : (
         orders.map((order) => (
           <div
             key={order.id}
             className="order-card"
           >
-            <h3>Order #{order.id}</h3>
+            <div className="order-header">
+              <h3>
+                Order #
+                {order.id}
+              </h3>
+
+              <span className="order-status completed">
+                Completed
+              </span>
+            </div>
 
             <p>
               Total:{" "}
               <strong>
                 $
                 {Number(
-                  order.total || 0
+                  order.total ||
+                    0
                 ).toFixed(2)}
               </strong>
             </p>
@@ -104,52 +189,66 @@ export default function Orders() {
             <p>
               Date:{" "}
               {formatDate(
-                order.date || order.created_at
+                order.date ||
+                  order.created_at
               )}
             </p>
 
             {order.items &&
-              order.items.length > 0 && (
+              order.items.length >
+                0 && (
                 <>
-                  <h4>Items:</h4>
+                  <h4>
+                    Purchased Beats
+                  </h4>
 
                   <div className="order-items">
-                    {order.items.map((item) => (
-                      <div
-                        key={item.id}
-                        className="order-item"
-                      >
-                        <div>
-                          <strong>
-                            {item.title}
-                          </strong>
+                    {order.items.map(
+                      (
+                        item
+                      ) => (
+                        <div
+                          key={
+                            item.id
+                          }
+                          className="order-item"
+                        >
+                          <div>
+                            <strong>
+                              {
+                                item.title
+                              }
+                            </strong>
 
-                          <p>
-                            $
-                            {Number(
-                              item.price || 0
-                            ).toFixed(2)}
-                          </p>
+                            <p>
+                              $
+                              {Number(
+                                item.price ||
+                                  0
+                              ).toFixed(
+                                2
+                              )}
+                            </p>
+                          </div>
+
+                          {item.file ? (
+                            <a
+                              href={`http://localhost:3001/beats/${item.file}`}
+                              download
+                              className="download-btn"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              Download 🎵
+                            </a>
+                          ) : (
+                            <span className="no-file">
+                              No file
+                            </span>
+                          )}
                         </div>
-
-                        {/* BOTÓN DESCARGA */}
-                        {item.file ? (
-                          <a
-                            href={`http://localhost:3001/beats/${item.file}`}
-                            download
-                            className="download-btn"
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            Download 🎵
-                          </a>
-                        ) : (
-                          <span className="no-file">
-                            No file
-                          </span>
-                        )}
-                      </div>
-                    ))}
+                      )
+                    )}
                   </div>
                 </>
               )}
