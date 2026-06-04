@@ -3,7 +3,6 @@ import { useCart } from "../CartContext/CartContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
-  // Usar el MISMO carrito global que usa Checkout
   const {
     cart,
     removeFromCart,
@@ -12,7 +11,6 @@ export default function Cart() {
 
   const navigate = useNavigate();
 
-  // Total
   const total = cart.reduce(
     (sum, item) =>
       sum + Number(item.price || 0),
@@ -24,24 +22,80 @@ export default function Cart() {
       <h2>🛒 Your Cart</h2>
 
       {cart.length === 0 ? (
-        <p>Your cart is empty</p>
+        <div className="empty-cart">
+          <h3>
+            Your cart is empty
+          </h3>
+
+          <p>
+            Browse the store and
+            add some beats.
+          </p>
+        </div>
       ) : (
         <>
+          {/* RESUMEN */}
+
+          <div className="cart-summary">
+            <div className="summary-card">
+              <h3>
+                {cart.length}
+              </h3>
+
+              <p>
+                Beats in Cart
+              </p>
+            </div>
+
+            <div className="summary-card">
+              <h3>
+                $
+                {total.toFixed(2)}
+              </h3>
+
+              <p>
+                Total Value
+              </p>
+            </div>
+          </div>
+
+          {/* ITEMS */}
+
           <div className="cart-items">
             {cart.map((beat) => (
               <div
                 key={beat.id}
                 className="cart-item"
               >
-                <div>
-                  <h3>{beat.title}</h3>
-                  <p>
-                    Prod. {beat.producer}
-                  </p>
+                <div className="cart-left">
+                  {beat.image && (
+                    <img
+                      src={`http://localhost:3001${beat.image}`}
+                      alt={beat.title}
+                      className="cart-image"
+                    />
+                  )}
+
+                  <div>
+                    <h3>
+                      {beat.title}
+                    </h3>
+
+                    <p>
+                      Prod.{" "}
+                      {beat.producer}
+                    </p>
+
+                    <span className="cart-category">
+                      {
+                        beat.category
+                      }
+                    </span>
+                  </div>
                 </div>
 
                 <div className="cart-right">
-                  <span>
+                  <span className="cart-price">
                     $
                     {Number(
                       beat.price || 0
@@ -63,10 +117,15 @@ export default function Cart() {
             ))}
           </div>
 
+          {/* FOOTER */}
+
           <div className="cart-footer">
-            <h3>
-              Total: $
-              {total.toFixed(2)}
+            <h3 className="cart-total">
+              Total:{" "}
+              <span>
+                $
+                {total.toFixed(2)}
+              </span>
             </h3>
 
             <div className="cart-actions">
