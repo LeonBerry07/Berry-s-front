@@ -342,6 +342,20 @@ export default function BeatDetails() {
             {beat.producer}
           </p>
 
+          <div className="beat-stats">
+            <div className="stat-box">
+              🎵 Premium License
+            </div>
+
+            <div className="stat-box">
+              🔥 Instant Download
+            </div>
+
+            <div className="stat-box">
+              ⭐ High Quality WAV
+            </div>
+          </div>
+
           {/* PRICE */}
 
           <h2 className="beat-details-price">
