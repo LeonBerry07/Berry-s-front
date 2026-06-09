@@ -15,6 +15,9 @@ export default function Catalogue() {
     setSelectedCategory,
   ] = useState("all");
 
+  const [search, setSearch] =
+    useState("");
+
   const [loading, setLoading] =
     useState(true);
 
@@ -43,8 +46,6 @@ export default function Catalogue() {
         const data =
           await response.json();
 
-        // asegurar image fallback
-
         const formattedBeats =
           data.map((beat) => ({
             ...beat,
@@ -68,8 +69,47 @@ export default function Catalogue() {
     fetchBeats();
   }, [selectedCategory]);
 
+  // =========================
+  // SEARCH FILTER
+  // =========================
+
+  const filteredBeats =
+    beats.filter((beat) => {
+      const term =
+        search.toLowerCase();
+
+      return (
+        beat.title
+          ?.toLowerCase()
+          .includes(term) ||
+        beat.producer
+          ?.toLowerCase()
+          .includes(term) ||
+        beat.category
+          ?.toLowerCase()
+          .includes(term)
+      );
+    });
+
   return (
     <div className="catalogue">
+      {/* ========================= */}
+      {/* SEARCH */}
+      {/* ========================= */}
+
+      <div className="catalog-search">
+        <input
+          type="text"
+          placeholder="Search beats, producers or categories..."
+          value={search}
+          onChange={(e) =>
+            setSearch(
+              e.target.value
+            )
+          }
+        />
+      </div>
+
       {/* ========================= */}
       {/* FILTERS */}
       {/* ========================= */}
@@ -175,18 +215,21 @@ export default function Catalogue() {
           <p>
             Loading beats...
           </p>
-        ) : beats.length === 0 ? (
-          <p>
+        ) : filteredBeats.length ===
+          0 ? (
+          <p className="no-results">
             No beats found.
           </p>
         ) : (
           <div className="beat-grid">
-            {beats.map((beat) => (
-              <BeatCard
-                key={beat.id}
-                beat={beat}
-              />
-            ))}
+            {filteredBeats.map(
+              (beat) => (
+                <BeatCard
+                  key={beat.id}
+                  beat={beat}
+                />
+              )
+            )}
           </div>
         )}
       </section>
