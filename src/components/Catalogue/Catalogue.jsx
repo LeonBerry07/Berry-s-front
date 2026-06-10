@@ -18,6 +18,9 @@ export default function Catalogue() {
   const [search, setSearch] =
     useState("");
 
+  const [sortBy, setSortBy] =
+    useState("newest");
+
   const [loading, setLoading] =
     useState(true);
 
@@ -70,26 +73,58 @@ export default function Catalogue() {
   }, [selectedCategory]);
 
   // =========================
-  // SEARCH FILTER
+  // SEARCH + SORT
   // =========================
 
   const filteredBeats =
-    beats.filter((beat) => {
-      const term =
-        search.toLowerCase();
+    beats
+      .filter((beat) => {
+        const term =
+          search.toLowerCase();
 
-      return (
-        beat.title
-          ?.toLowerCase()
-          .includes(term) ||
-        beat.producer
-          ?.toLowerCase()
-          .includes(term) ||
-        beat.category
-          ?.toLowerCase()
-          .includes(term)
-      );
-    });
+        return (
+          beat.title
+            ?.toLowerCase()
+            .includes(term) ||
+          beat.producer
+            ?.toLowerCase()
+            .includes(term) ||
+          beat.category
+            ?.toLowerCase()
+            .includes(term)
+        );
+      })
+      .sort((a, b) => {
+        switch (sortBy) {
+          case "price-low":
+            return (
+              Number(a.price) -
+              Number(b.price)
+            );
+
+          case "price-high":
+            return (
+              Number(b.price) -
+              Number(a.price)
+            );
+
+          case "az":
+            return a.title.localeCompare(
+              b.title
+            );
+
+          case "za":
+            return b.title.localeCompare(
+              a.title
+            );
+
+          default:
+            return (
+              Number(b.id) -
+              Number(a.id)
+            );
+        }
+      });
 
   return (
     <div className="catalogue">
@@ -108,6 +143,41 @@ export default function Catalogue() {
             )
           }
         />
+      </div>
+
+      {/* ========================= */}
+      {/* SORT */}
+      {/* ========================= */}
+
+      <div className="catalog-sort">
+        <select
+          value={sortBy}
+          onChange={(e) =>
+            setSortBy(
+              e.target.value
+            )
+          }
+        >
+          <option value="newest">
+            Newest
+          </option>
+
+          <option value="price-low">
+            Price: Low → High
+          </option>
+
+          <option value="price-high">
+            Price: High → Low
+          </option>
+
+          <option value="az">
+            A → Z
+          </option>
+
+          <option value="za">
+            Z → A
+          </option>
+        </select>
       </div>
 
       {/* ========================= */}

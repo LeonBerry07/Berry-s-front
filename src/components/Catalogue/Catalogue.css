@@ -388,3 +388,99 @@
     font-size: 3rem;
   }
 }
+
+/* SEARCH */
+
+.catalog-search {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.catalog-search input {
+  width: min(600px, 90%);
+  padding: 14px 18px;
+
+  border-radius: 14px;
+  border: 1px solid
+    rgba(255, 255, 255, 0.1);
+
+  background: rgba(
+    255,
+    255,
+    255,
+    0.06
+  );
+
+  color: white;
+
+  backdrop-filter: blur(12px);
+}
+
+.catalog-search input:focus {
+  outline: none;
+
+  border-color:
+    rgba(
+      139,
+      92,
+      246,
+      0.6
+    );
+
+  box-shadow:
+    0 0 20px
+    rgba(
+      139,
+      92,
+      246,
+      0.2
+    );
+}
+
+/* SORT */
+
+.catalog-sort {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.catalog-sort select {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.08
+  );
+
+  color: white;
+
+  border: 1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.1
+    );
+
+  padding: 12px 18px;
+
+  border-radius: 12px;
+
+  backdrop-filter: blur(10px);
+
+  cursor: pointer;
+}
+
+.catalog-sort select:focus {
+  outline: none;
+
+  border-color:
+    rgba(
+      139,
+      92,
+      246,
+      0.6
+    );
+}
