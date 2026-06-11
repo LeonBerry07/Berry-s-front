@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from "./components/Context/AuthContext";
 import { CartProvider } from "./components/CartContext/CartContext";
+import { PlayerProvider } from './PlayerContext/PlayerContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -13,9 +14,11 @@ root.render(
     {/* <Provider> */}
     <BrowserRouter>
       <AuthProvider>
-        <CartProvider>
-          <App />
-        </CartProvider>
+        <PlayerProvider>
+          <CartProvider>
+            <App />
+          </CartProvider>
+        </PlayerProvider>
       </AuthProvider>
     </BrowserRouter>
     {/* </Provider> */}

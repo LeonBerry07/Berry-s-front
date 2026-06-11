@@ -1,15 +1,11 @@
 import "./BeatCard.css";
-
-import { useRef } from "react";
-
 import { Link } from "react-router-dom";
-
 import { useCart } from "../CartContext/CartContext";
+import { usePlayer } from "../../PlayerContext/PlayerContext";
 
 export default function BeatCard({
   beat,
 }) {
-  const audioRef = useRef(null);
 
   const {
     cart,
@@ -19,6 +15,9 @@ export default function BeatCard({
     favorites,
     toggleFavorite,
   } = useCart();
+
+  const { playBeat } =
+  usePlayer();
 
   // =========================
   // STATES
@@ -43,36 +42,7 @@ export default function BeatCard({
   function handlePreview(e) {
     e.preventDefault();
 
-    const audio =
-      audioRef.current;
-
-    if (
-      !audio ||
-      !beat.preview
-    )
-      return;
-
-    // STOP OTHER AUDIOS
-
-    document
-      .querySelectorAll(
-        "audio"
-      )
-      .forEach((a) => {
-        if (a !== audio) {
-          a.pause();
-
-          a.currentTime = 0;
-        }
-      });
-
-    if (audio.paused) {
-      audio.play();
-    } else {
-      audio.pause();
-
-      audio.currentTime = 0;
-    }
+    playBeat(beat);
   }
 
   // =========================
@@ -198,14 +168,6 @@ export default function BeatCard({
           </button>
         </div>
 
-        {/* ========================= */}
-        {/* AUDIO */}
-        {/* ========================= */}
-
-        <audio
-          ref={audioRef}
-          src={`http://localhost:3001${beat.preview}`}
-        />
       </div>
     </Link>
   );

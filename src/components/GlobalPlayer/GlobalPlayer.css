@@ -1,0 +1,54 @@
+.music-player {
+  position: fixed;
+
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: 90px;
+
+  background:
+    rgba(15, 23, 42, 0.96);
+
+  border-top:
+    1px solid
+    rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items: center;
+
+  padding:
+    0 30px;
+
+  z-index: 9999;
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+
+  color: white;
+}
+
+.player-info span {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.65
+    );
+
+  font-size: 14px;
+}
+
+.music-player audio {
+  width: 450px;
+}

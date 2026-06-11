@@ -33,6 +33,8 @@ import Favorites from "./components/Favorites/Favorites";
 
 import { useCart } from "./components/CartContext/CartContext";
 
+import GlobalPlayer from "./components/GlobalPlayer/GlobalPlayer";
+
 function App() {
   const { cart } = useCart();
 
@@ -144,6 +146,8 @@ function App() {
           element={<Admin />}
         />
       </Routes>
+
+      <GlobalPlayer/>
 
       {/* FOOTER */}
 
