@@ -21,6 +21,9 @@ export default function Catalogue() {
   const [sortBy, setSortBy] =
     useState("newest");
 
+  const [visibleBeats, setVisibleBeats] =
+    useState(8);
+
   const [loading, setLoading] =
     useState(true);
 
@@ -125,6 +128,20 @@ export default function Catalogue() {
             );
         }
       });
+
+      const displayedBeats =
+        filteredBeats.slice(
+          0,
+          visibleBeats
+        );
+
+      useEffect(() => {
+        setVisibleBeats(8);
+      }, [
+        search,
+        selectedCategory,
+        sortBy,
+      ]);
 
   return (
     <div className="catalogue">
@@ -291,8 +308,9 @@ export default function Catalogue() {
             No beats found.
           </p>
         ) : (
+          <>
           <div className="beat-grid">
-            {filteredBeats.map(
+            {displayedBeats.map(
               (beat) => (
                 <BeatCard
                   key={beat.id}
@@ -301,6 +319,22 @@ export default function Catalogue() {
               )
             )}
           </div>
+          {visibleBeats <
+            filteredBeats.length && (
+            <div className="load-more-container">
+              <button
+                className="load-more-btn"
+                onClick={() =>
+                  setVisibleBeats(
+                    (prev) => prev + 8
+                  )
+                }
+              >
+                Load More Beats 🎵
+              </button>
+            </div>
+          )}
+          </>
         )}
       </section>
     </div>

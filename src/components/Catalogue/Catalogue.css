@@ -484,3 +484,56 @@
       0.6
     );
 }
+
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.load-more-btn {
+  border: none;
+
+  padding: 14px 28px;
+
+  border-radius: 14px;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6d28d9,
+      #8b5cf6
+    );
+
+  transition: 0.25s;
+
+  box-shadow:
+    0 10px 30px
+    rgba(
+      139,
+      92,
+      246,
+      0.25
+    );
+}
+
+.load-more-btn:hover {
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 18px 40px
+    rgba(
+      139,
+      92,
+      246,
+      0.35
+    );
+}
