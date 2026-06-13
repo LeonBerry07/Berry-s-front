@@ -154,7 +154,7 @@ function App() {
       <footer>
         <p>
           &copy; 2026 Berry's -
-          All rights reserved
+          All rights reserved by GOD
         </p>
       </footer>
     </div>
