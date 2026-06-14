@@ -526,7 +526,7 @@ export default function BeatDetails() {
                     </h3>
 
                     <p>
-                      Prod.{" "}
+                      Prod. by{" "}
                       {
                         relatedBeat.producer
                       }
