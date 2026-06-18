@@ -5,11 +5,32 @@ import {
   useState,
 } from "react";
 
+import {
+  useNavigate,
+} from "react-router-dom";
+
 const CartContext = createContext();
 
 export function CartProvider({
   children,
 }) {
+
+  const navigate = useNavigate();
+
+
+  function requireLogin() {
+  const user =
+    JSON.parse(
+      localStorage.getItem("user")
+    );
+
+  if (!user) {
+    navigate("/login");
+    return false;
+  }
+
+  return true;
+}
   // =========================
   // CART
   // =========================
@@ -125,6 +146,10 @@ export function CartProvider({
   // =========================
 
   function addToCart(beat) {
+
+    if (!requireLogin())
+    return;
+
     setCart((prev) => {
       const exists = prev.some(
         (item) =>
@@ -179,6 +204,10 @@ export function CartProvider({
   }
 
   function toggleFavorite(beat) {
+
+    if (!requireLogin())
+    return;
+
     const exists =
       favorites.some(
         (item) =>

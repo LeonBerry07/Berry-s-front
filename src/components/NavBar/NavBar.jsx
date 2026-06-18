@@ -57,7 +57,7 @@ function NavBar() {
           to="/"
           className="navbar-logo"
         >
-          Berry's Music
+          Berry's
         </Link>
       </div>
 
