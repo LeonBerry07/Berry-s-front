@@ -35,6 +35,8 @@ import { useCart } from "./components/CartContext/CartContext";
 
 import GlobalPlayer from "./components/GlobalPlayer/GlobalPlayer";
 
+import AdminRoute from "./components/AdminRoute/AdminRoute";
+
 function App() {
   const { cart } = useCart();
 
@@ -143,7 +145,11 @@ function App() {
 
         <Route
           path="/admin"
-          element={<Admin />}
+          element={
+          <AdminRoute>
+            <Admin />
+          </AdminRoute>
+          }
         />
       </Routes>
 
