@@ -43,7 +43,7 @@ export default function Cart() {
               </h3>
 
               <p>
-                Beats in Cart
+                Beats In Cart
               </p>
             </div>
 
