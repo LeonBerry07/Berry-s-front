@@ -6,6 +6,8 @@ import {
 
 import BeatCard from "../BeatCard/BeatCard";
 
+const API_URL = process.env.BACKEND_URL;
+
 export default function Catalogue() {
   const [beats, setBeats] =
     useState([]);
@@ -37,7 +39,7 @@ export default function Catalogue() {
         setLoading(true);
 
         let url =
-          "http://localhost:3001/api/beats";
+          `${API_URL}/api/beats`;
 
         if (
           selectedCategory !==
