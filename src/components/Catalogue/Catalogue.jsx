@@ -6,7 +6,7 @@ import {
 
 import BeatCard from "../BeatCard/BeatCard";
 
-const API_URL = process.env.BACKEND_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 
 export default function Catalogue() {
   const [beats, setBeats] =
