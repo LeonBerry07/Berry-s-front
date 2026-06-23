@@ -39,7 +39,7 @@ export default function Catalogue() {
         setLoading(true);
 
         let url =
-          `${API_URL}/api/beats`;
+          `${REACT_APP_API_URL}/api/beats`;
 
         if (
           selectedCategory !==
