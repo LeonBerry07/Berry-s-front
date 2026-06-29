@@ -8,6 +8,8 @@ import BeatCard from "../BeatCard/BeatCard";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+console.log("API URL:", API_URL);
+
 export default function Catalogue() {
   const [beats, setBeats] =
     useState([]);
@@ -39,7 +41,7 @@ export default function Catalogue() {
         setLoading(true);
 
         let url =
-          `${REACT_APP_API_URL}/api/beats`;
+          `${API_URL}/api/beats`;
 
         if (
           selectedCategory !==
